@@ -6,8 +6,8 @@
     }
   </style>
 
-{% extends "layout.html" %}
-{% block body %}
+
+<body>
   <h1>Some famous Computer Scientists</h1>
   <div>{{data}}</div>
 
@@ -19,11 +19,11 @@
 
 <p><a href="/another">Go to the other page</a></p>
 
-<form method="POST" action="/log">
-<p><input type="text" name="uid"> <input type="text" name="password"> <input type="submit" value="Login"></p>
+<form method="POST" action="/add">
+<p><input type="text" name="username"> <input type="text" name="password"> <input type="submit" value="Login"></p>
 </form>
 
-{% endblock %}
+</body>
 
 
 </html>

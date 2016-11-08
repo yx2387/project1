@@ -18,11 +18,11 @@ Read about it online.
 import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
-from flask import Flask, request, render_template, g, redirect, Response
+from flask import flash,Flask, request, render_template, g, redirect, Response
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
-
+app.secret_key = 'some_secret'
 
 #
 # The following uses the postgresql test.db -- you can use this for debugging purposes
@@ -38,7 +38,7 @@ app = Flask(__name__, template_folder=tmpl_dir)
 #     DATABASEURI = "postgresql://ewu2493:foobar@<IP_OF_POSTGRE_SQL_SERVER>/postgres"
 #
 # Swap out the URI below with the URI for the database created in part 2
-DATABASEURI = "sqlite:///test.db"
+DATABASEURI = "postgresql://fp2360:nyx8h@104.196.175.120/postgres"
 
 
 #
@@ -183,9 +183,29 @@ def index():
 # notice that the functio name is another() rather than index()
 # the functions for each app.route needs to have different names
 #
+
 @app.route('/another')
 def another():
   return render_template("anotherfile.html")
+
+@app.route('/log', methods=['POST'])
+def log():
+  name = request.form['uid']
+  print name
+  password = request.form['password']
+  print password
+  cursor = g.conn.execute("select u.password from users u where u.user_id = %s ",name);
+  #print cursor.fetchone()[0] == password
+  res = cursor.fetchone()
+  if res == None:
+    flash("User ID doesnt't exist!")
+  elif res[0] == password:
+#    print 1
+    flash("Login Successful!")
+    return redirect('/another')
+  else:
+    flash("Password Incorrect!")
+  return redirect('/')
 
 
 # Example of adding new data to the database
