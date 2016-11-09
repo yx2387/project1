@@ -188,21 +188,42 @@ def index():
 def another():
   return render_template("anotherfile.html")
 
+@app.route('/home_i')
+def home_i():
+  return render_template("home_i.html")
+
+@app.route('/home_s')
+def home_s():
+  return render_template("home_s.html")
+
+@app.route('/class_s')
+def class_s():
+  cursor = g.conn.execute("SELECT * FROM course")
+#  courses = []
+  Courses = [dict(id=row[0], session=row[1], name=row[2], syllabus=row[3], credit=row[4]) for row in cursor.fetchall()]
+#  for result in cursor:
+#    courses.append(result)  # can also be accessed using result[0]
+  cursor.close()
+#  Courses = Courses
+  return render_template("class_s.html",Courses=Courses)
+
 @app.route('/log', methods=['POST'])
 def log():
   name = request.form['uid']
   print name
   password = request.form['password']
   print password
-  cursor = g.conn.execute("select u.password from users u where u.user_id = %s ",name);
+  cursor = g.conn.execute("select u.password,u.user_type from users u where u.user_id = %s ",name);
   #print cursor.fetchone()[0] == password
   res = cursor.fetchone()
   if res == None:
     flash("User ID doesnt't exist!")
   elif res[0] == password:
-#    print 1
     flash("Login Successful!")
-    return redirect('/another')
+    if res[1] == "Student":
+      return redirect('/home_s')
+    else:
+      return redirect('/home_i')
   else:
     flash("Password Incorrect!")
   return redirect('/')
@@ -215,6 +236,11 @@ def add():
   print name
   cmd = 'INSERT INTO test(name) VALUES (:name1), (:name2)';
   g.conn.execute(text(cmd), name1 = name, name2 = name);
+  return redirect('/')
+
+@app.route('/logout',)
+def logout():
+  flash('You have successfully logged out!')
   return redirect('/')
 
 

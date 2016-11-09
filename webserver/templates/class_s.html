@@ -1,1 +1,12 @@
+
 Student Classes
+
+{% block body %}
+{% for c in Courses %}
+    <strong>id:</strong> {{ c.id }} <br>
+    <strong>session:</strong> {{ c.session }} <br>
+    <strong>name:</strong> {{ c.name }} <br>
+    <strong>syllabus:</strong> {{ c.syllabus }} <br>
+    <strong>credit:</strong> {{ c.credit }} <br>
+{% endfor %}
+{% endblock %}
