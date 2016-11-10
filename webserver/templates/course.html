@@ -2,7 +2,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>COMSW 4111</title>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" />
 	<style type="text/css">
 	a:hover{
 		cursor: pointer;
@@ -30,7 +30,8 @@
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
-	        <li id="file_nav" class="active"><a href="#">Files<span class="sr-only">(current)</span></a></li>
+	        <li id="overview_nav" class="active"><a href="#">Overview<span class="sr-only">(current)</span></a></li>
+          <li id="file_nav"><a href="#">Assignments</a></li>
 	        <li id="assignment_nav"><a href="#">Assignments</a></li>
 	        <li id="announcement_nav"><a href="#">Announcements</a></li>
 	        <li id="qa_nav"><a href="#">Q & A</a></li>
@@ -42,6 +43,47 @@
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
+
+  <div id="overview_panel" style="margin-left: 30%;margin-right: 30%">
+    <div class="list-group">
+        <div class="list-group-item">
+          <h4 class="list-group-item-heading">Course ID</h4>
+          <p class="list-group-item-text">COMSW 4771</p>
+        </div>
+        <div class="list-group-item">
+          <h4 class="list-group-item-heading">Session</h4>
+          <p class="list-group-item-text">s001</p>
+        </div>
+        <div class="list-group-item">
+          <h4 class="list-group-item-heading">Course Name</h4>
+          <p class="list-group-item-text">Machine Learning</p>
+        </div>
+        <div class="list-group-item">
+          <h4 class="list-group-item-heading">Instructor</h4>
+          <p class="list-group-item-text">Daniel Hsu</p>
+        </div>
+        <div class="list-group-item">
+          <h4 class="list-group-item-heading">Credit</h4>
+          <p class="list-group-item-text">3</p>
+        </div>
+        <div class="list-group-item">
+          <h4 class="list-group-item-heading">Semester</h4>
+          <p class="list-group-item-text">Fall 2016</p>
+        </div>
+        <div class="list-group-item">
+          <h4 class="list-group-item-heading">Time</h4>
+          <p class="list-group-item-text">Mon Wed 1:10-2:25pm</p>
+        </div>
+        <div class="list-group-item">
+          <h4 class="list-group-item-heading">Location</h4>
+          <p class="list-group-item-text">NWC 501</p>
+        </div>
+        <div class="list-group-item">
+          <h4 class="list-group-item-heading">Syllabus</h4>
+          <p class="list-group-item-text">blabla</p>
+        </div>
+    </div>
+  </div>
 
 	<div id="file_panel" style="margin-left: 30%;margin-right: 30%">
 		<ul class="list-group">
@@ -195,8 +237,8 @@
 	</div>
 	
 	
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/Course.js"></script>
+	<script type="text/javascript" src="../static/js/jquery.min.js"></script>
+	<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../static/js/Course.js"></script>
 </body>
 </html>

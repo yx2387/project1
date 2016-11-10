@@ -99,4 +99,8 @@ $(document).ready(function(){
 		$("#account_panel").show();
 	});
 
+	$("#logout").click(function(){
+		window.location.href = "login.html";
+	});
+
 });
