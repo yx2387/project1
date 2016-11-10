@@ -18,7 +18,7 @@ Read about it online.
 import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
-from flask import flash,Flask, request, render_template, g, redirect, Response
+from flask import escape, flash, Flask, request, render_template, g, redirect, Response, session
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -128,17 +128,17 @@ def index():
   """
 
   # DEBUG: this is debugging code to see what request looks like
-  print request.args
+  #print request.args
 
 
   #
   # example of a database query
   #
-  cursor = g.conn.execute("SELECT name FROM test")
-  names = []
-  for result in cursor:
-    names.append(result['name'])  # can also be accessed using result[0]
-  cursor.close()
+  #cursor = g.conn.execute("SELECT name FROM test")
+  #names = []
+  #for result in cursor:
+  #  names.append(result['name'])  # can also be accessed using result[0]
+  #cursor.close()
 
   #
   # Flask uses Jinja templates, which is an extension to HTML where you can
@@ -166,14 +166,16 @@ def index():
   #     <div>{{n}}</div>
   #     {% endfor %}
   #
-  context = dict(data = names)
+  #context = dict(data = names)
 
 
   #
   # render_template looks in the templates/ folder for files.
   # for example, the below file reads template/index.html
   #
-  return render_template("index.html", **context)
+  if 'uni' in session:
+    return 'Logged in as %s' % escape(session['uni'])
+  return render_template("login.html")
 
 #
 # This is an example of a different path.  You can see it at
@@ -190,11 +192,14 @@ def another():
 
 @app.route('/home_i')
 def home_i():
-  return render_template("home_i.html")
+  return render_template("instructor.html")
 
 @app.route('/home_s')
 def home_s():
-  return render_template("home_s.html")
+  if 'uni' in session:
+    return render_template("student.html",uni=session['uni'])
+  else:
+    return redirect('/')
 
 @app.route('/class_s')
 def class_s():
@@ -209,7 +214,7 @@ def class_s():
 
 @app.route('/log', methods=['POST'])
 def log():
-  name = request.form['uid']
+  name = request.form['uni']
   print name
   password = request.form['password']
   print password
@@ -220,6 +225,7 @@ def log():
     flash("User ID doesnt't exist!")
   elif res[0] == password:
     flash("Login Successful!")
+    session['uni'] = request.form['uni']
     if res[1] == "Student":
       return redirect('/home_s')
     else:

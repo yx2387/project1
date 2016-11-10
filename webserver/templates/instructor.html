@@ -1,0 +1,427 @@
+<html style="height: 100%">
+<head>
+	<meta charset="UTF-8">
+	<title>Instructor</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-datetimepicker.min.css" />
+	<style type="text/css">
+	a:hover{
+		cursor: pointer;
+	}
+	</style>
+</head>
+<body style="height:100%">
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="#">Courseworks</a>
+	    </div>
+
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li id="course_nav" class="active"><a href="#">Courses <span class="sr-only">(current)</span></a></li>
+	        <li id="file_nav"><a href="#">Files</a></li>
+	        <li id="assignment_nav"><a href="#">Assignments</a></li>
+	        <li id="announcement_nav"><a href="#">Announcements</a></li>
+	        <li id="qa_nav"><a href="#">Q & A</a></li>
+	      </ul>
+	      
+	      <ul class="nav navbar-nav navbar-right">
+	        <li id="account_nav"><a href="#">Account</a></li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+
+	<div id="course_panel" style="margin-left: 10%; margin-right: 10%;">
+		<div class="panel panel-default" style="width:30%;float: left; margin-left: 10%;margin-top: 5%">
+			<div class="panel-body">
+			    <a class="course_name" href="course.html">COMSW 4111 (Section: 001)</a>
+			</div>
+  			<div class="panel-footer">
+  				<div>Introduction to Databases</div>
+  				<div>Fall 2016</div>
+  				<div>Eugene Wu</div>
+  			</div>
+		</div>
+		<div class="panel panel-default" style="width:30%;float: left;margin-left: 10%;margin-top: 5%">
+			<div class="panel-body">
+			    COMSW 4771 (Section: 001)
+			</div>
+  			<div class="panel-footer">
+  				<div>Machine Learning</div>
+  				<div>Fall 2016</div>
+  				<div>Daniel Hsu</div>
+  			</div>
+		</div>
+		<div class="panel panel-default" style="width:30%;float: left;margin-left: 10%;margin-top: 5%">
+			<div class="panel-body">
+			    CSORW 4321 (Section: 001)
+			</div>
+  			<div class="panel-footer">
+  				<div>Analysis of Algorithms</div>
+  				<div>Fall 2016</div>
+  				<div>Mihalis Yannakakis</div>
+  			</div>
+		</div>
+		<div class="panel panel-default" style="width:30%;float: left;margin-left: 10%;margin-top: 5%">
+			<div class="panel-body">
+			    COMSE 6998 (Section: 005)
+			</div>
+  			<div class="panel-footer">
+  				<div>Cloud Computing & Big Data</div>
+  				<div>Fall 2016</div>
+  				<div>Sambit Sahu</div>
+  			</div>
+		</div>
+	</div>
+
+	<div id="file_panel" style="width:40%;margin-left: 30%;margin-bottom: 10%">
+		<form>
+			<div class="form-group">
+			    <label>Course:</label>
+			    <select type="text" class="form-control">
+			    	<option>COMSW 4111</option>
+			    	<option>COMSW 4771</option>
+			    </select>
+			</div>
+			<div class="form-group">
+				<label>File input</label>
+			    <input type="file" id="exampleInputFile">
+			</div>
+			<button type="submit" class="btn btn-primary">Post</button>
+		</form>
+		<h2>Previous files</h2>
+		<div>
+			<h4>COMSW 4111 Introduction to Databases</h4>
+			<ul class="list-group">
+	  			<li class="list-group-item">
+	  				<a>
+	  					lec17
+	  				</a>
+	  			</li>
+	  			<li class="list-group-item">
+	  				<a>
+	  					lec16
+	  				</a>
+	  			</li>
+	  			<li class="list-group-item">
+	  				<a>
+	  					lec15
+	  				</a>
+	  			</li>
+			</ul>
+		</div>
+	</div>
+
+	<div id="assignment_panel" style="width:40%;margin-left: 30%;margin-bottom: 10%">
+		<div>
+			<form>
+			  <div class="form-group">
+			    <label>Course:</label>
+			    <select type="text" class="form-control">
+			    	<option>COMSW 4111</option>
+			    	<option>COMSW 4771</option>
+			    </select>
+			  </div>
+			  <div class="form-group">
+			    <label>Assignment title:</label>
+			    <input type="text" class="form-control">
+			  </div>
+			  <div class="form-group">
+			    <label>Assignment description:</label>
+			    <textarea class="form-control" rows="3"></textarea>
+			  </div>
+			  <div class="form-group">
+			    <label>Due date:</label>
+			    <input type="text" class="form-control" id="datetimepicker" data-date-format="yyyy-mm-dd hh:ii:ss">
+			  </div>
+			  <div class="form-group">
+			    <label>Points</label>
+			    <input type="number" class="form-control">
+			  </div>
+			  <div class="form-group">
+			    <label>File input</label>
+			    <input type="file" id="exampleInputFile">
+			  </div>
+			  <button type="submit" class="btn btn-primary">Post</button>
+			</form>
+		</div>
+		<h2>Previous assignments</h2>
+		<div style="margin-top: 2%">
+			<h4 style="margin-bottom: 2%">COMSW 4111  Introduction to Databases</h4>
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+	  			<div class="panel panel-default">
+	    			<div class="panel-heading" role="tab" id="headingOne">
+	      				<h4 class="panel-title">
+	        				<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+	          				HW1
+	        				</a><span class="badge" style="float:right">Due: 2016/11/20</span>
+	      				</h4>
+	    			</div>
+	    			<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+	      				<div class="panel-body">
+	        				<div>Description:</div>
+	        				<div>Points:</div>
+	        				<div>Post time:</div>
+	      				</div>
+	    			</div>
+	  			</div>
+		  		<div class="panel panel-default">
+		    		<div class="panel-heading" role="tab" id="headingTwo">
+		      			<h4 class="panel-title">
+		        			<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+		          			HW2
+		        			</a><span class="badge" style="float:right">Due: 2016/11/20</span>
+		      			</h4>
+		    		</div>
+		    		<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+		      			<div class="panel-body">
+		        			<div class="panel-body">
+			        			<div>Description:</div>
+			        			<div>Points:</div>
+			        			<div>Post time:</div>
+		      				</div>
+		      			</div>
+		    		</div>
+		  		</div>
+	  		</div>
+		</div>
+
+		<div style="margin-top: 2%">
+			<h4 style="margin-bottom: 2%">COMSW 4771  Machine Learning</h4>
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+	  			<div class="panel panel-default">
+	    			<div class="panel-heading" role="tab" id="headingThree">
+	      				<h4 class="panel-title">
+	        				<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+	          				HW1
+	        				</a><span class="badge" style="float:right">Due: 2016/11/20</span>
+	      				</h4>
+	    			</div>
+	    			<div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+	      				<div class="panel-body">
+	        				<div>Description:</div>
+	        				<div>Points:</div>
+	        				<div>Post time:</div>
+	      				</div>
+	    			</div>
+	  			</div>
+		  		<div class="panel panel-default">
+		    		<div class="panel-heading" role="tab" id="headingFour">
+		      			<h4 class="panel-title">
+		        			<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+		          			HW2
+		        			</a><span class="badge" style="float:right">Due: 2016/11/20</span>
+		      			</h4>
+		    		</div>
+		    		<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+		      			<div class="panel-body">
+		        			<div class="panel-body">
+			        			<div>Description:</div>
+			        			<div>Points:</div>
+			        			<div>Post time:</div>
+		      				</div>
+		      			</div>
+		    		</div>
+		  		</div>
+		  	</div>
+		</div>
+	</div>
+
+	<div id="announcement_panel" style="width:40%;margin-left: 30%;margin-bottom: 10%">
+		<form>
+			<div class="form-group">
+			    <label>Course:</label>
+			    <select type="text" class="form-control">
+			    	<option>COMSW 4111</option>
+			    	<option>COMSW 4771</option>
+			    </select>
+			</div>
+			<div class="form-group">
+			   <label>Announcement title:</label>
+			   <input type="text" class="form-control">
+			</div>
+			<div class="form-group">
+			   <label>Announcement description:</label>
+			   <textarea class="form-control" rows="3"></textarea>
+			</div>
+			<button type="submit" class="btn btn-primary">Post</button>
+		</form>
+		<div>
+			<h2>Previous announcements</h2>
+			<div style="margin-top: 2%">
+				<h4 style="margin-bottom: 2%">COMSW 4111  Introduction to Databases</h4>
+				<div class="panel-group">
+		  			<div class="panel panel-default">
+		    			<div class="panel-heading" role="tab">
+		      				<h4 class="panel-title">
+		      					HW5 Deadline
+		      					<span class="badge" style="float:right">2016/11/20</span>
+		      				</h4>
+		    			</div>
+		      			<div class="panel-body">
+		        				Deadline is extented to 11.23!!
+		      			</div>
+		  			</div>
+		  			<div class="panel panel-default">
+		    			<div class="panel-heading" role="tab">
+		      				<h4 class="panel-title">
+		        				Admistrivia issues
+		        				<span class="badge" style="float:right">2016/11/20</span>
+		      				</h4>
+		    			</div>
+		        		<div class="panel-body">
+			        		HW3 is released!!
+		      			</div>
+		      		</div>
+    			</div>
+			</div>
+
+			<div style="margin-top: 2%">
+				<h4 style="margin-bottom: 2%">COMSW 4771 Machine Learning</h4>
+				<div class="panel-group">
+		  			<div class="panel panel-default">
+		    			<div class="panel-heading" role="tab">
+		      				<h4 class="panel-title">
+		      					HW5 Deadline
+		      					<span class="badge" style="float:right">2016/11/20</span>
+		      				</h4>
+		    			</div>
+		      			<div class="panel-body">
+		        				Deadline is extented to 11.23!!
+		      			</div>
+		  			</div>
+		  			<div class="panel panel-default">
+		    			<div class="panel-heading" role="tab">
+		      				<h4 class="panel-title">
+		        				Admistrivia issues
+		        				<span class="badge" style="float:right">2016/11/20</span>
+		      				</h4>
+		    			</div>
+		        		<div class="panel-body">
+			        		HW3 is released!!
+		      			</div>
+		      		</div>
+    			</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="qa_panel" style="width:40%;margin-left: 30%;margin-bottom: 10%">
+		<div>
+			<h4>COMSW 4111 Introduction to Databases</h4>
+			<div class="panel-group">
+	  			<div class="panel panel-default">
+	    			<div class="panel-heading" role="tab">
+	      				<h4 class="list-group-item-heading">
+	      					Binary classification
+	      					<span class="badge" style="float:right">2016/11/20</span>
+	      				</h4>
+	      				<p class="list-group-item-text">Why w=z?</p>
+	      				<small>Asked by:</small>
+	      				<small>Yibo Xu</small>
+	    			</div>
+	      			<div class="panel-body">
+	      				<div style="border-bottom: 1px solid #ddd;">
+	      					<div>
+	      						Answer 1
+	      					</div>
+	      					<div>
+	      						<small>Answered by: Eugene Wu at 2016-11-08</small>
+	      					</div>
+	      				</div>
+	      				<div style="border-bottom: 1px solid #ddd;">
+	      					<div>
+	      						Answer 2
+	      					</div>
+	      					<div>
+	      						<small>Answered by: Eugene Wu at 2016-11-08</small>
+	      					</div>
+	      				</div>
+
+	      			</div>
+	  			</div>
+	  			<button class="btn btn-primary" style="margin-top: 3%;margin-bottom: 3%;">Answer</button>
+	  			<div class="panel panel-default">
+	    			<div class="panel-heading" role="tab">
+	      				<h4 class="list-group-item-heading">
+	      					BCNF
+	      					<span class="badge" style="float:right">2016/11/20</span>
+	      				</h4>
+	      				<p class="list-group-item-text">Why w=z?</p>
+	      				<small>Asked by:</small>
+	      				<small>Yibo Xu</small>
+	    			</div>
+	      			<div class="panel-body">
+	      				<div style="border-bottom: 1px solid #ddd;">
+	      					<div>
+	      						Answer 1
+	      					</div>
+	      					<div>
+	      						<small>Answered by: Eugene Wu at 2016-11-08</small>
+	      					</div>
+	      				</div>
+	      				<div style="border-bottom: 1px solid #ddd;">
+	      					<div>
+	      						Answer 2
+	      					</div>
+	      					<div>
+	      						<small>Answered by: Eugene Wu at 2016-11-08</small>
+	      					</div>
+	      				</div>
+
+	      			</div>
+	  			</div>
+	    	</div>
+		</div>
+	</div>
+
+	<div id="account_panel" style="margin-left: 30%; margin-right: 30%;">
+		<div class="list-group">
+  			<div class="list-group-item">
+    			<h4 class="list-group-item-heading">UNI</h4>
+    			<p class="list-group-item-text">fp2360</p>
+  			</div>
+  			<div class="list-group-item">
+    			<h4 class="list-group-item-heading">Name</h4>
+    			<p class="list-group-item-text">Fei Peng</p>
+  			</div>
+  			<div class="list-group-item">
+    			<h4 class="list-group-item-heading">Gender</h4>
+    			<p class="list-group-item-text">Male</p>
+  			</div>
+  			<div class="list-group-item">
+    			<h4 class="list-group-item-heading">Department</h4>
+    			<p class="list-group-item-text">Computer Science</p>
+  			</div>
+  			<div class="list-group-item">
+    			<h4 class="list-group-item-heading">Enroll Date</h4>
+    			<p class="list-group-item-text">2016-09-01</p>
+  			</div>
+  			<div class="list-group-item">
+    			<h4 class="list-group-item-heading">Email</h4>
+    			<p class="list-group-item-text">fp2360@columbia.edu</p>
+  			</div>
+  			<div class="list-group-item">
+    			<h4 class="list-group-item-heading">Contact Phone</h4>
+    			<p class="list-group-item-text">9172090367</p>
+  			</div>
+		</div>
+	</div>
+	
+	
+	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript" src="/static/js/Instructor.js"></script>
+</body>
+</html>
