@@ -197,7 +197,12 @@ def home_i():
 @app.route('/home_s')
 def home_s():
   if 'uni' in session:
-    return render_template("student.html",uni=session['uni'])
+    print session['uni']
+    cursor = g.conn.execute("select c.course_id,c.session,c.course_name,c.syllabus,c.credit from course c, open o, take t where t.user_id = %s and t.open_cid = o.open_cid and o.course_id = c.course_id and o.session = c.session", session['uni'])
+    Courses = [dict(id=row[0], session=row[1], name=row[2], syllabus=row[3], credit=row[4]) for row in cursor.fetchall()]
+    cursor.close()
+    print Courses
+    return render_template("student.html",Courses=Courses)
   else:
     return redirect('/')
 
@@ -206,9 +211,8 @@ def class_s():
   cursor = g.conn.execute("SELECT * FROM course")
 #  courses = []
   Courses = [dict(id=row[0], session=row[1], name=row[2], syllabus=row[3], credit=row[4]) for row in cursor.fetchall()]
-#  for result in cursor:
-#    courses.append(result)  # can also be accessed using result[0]
   cursor.close()
+  print(Courses)
 #  Courses = Courses
   return render_template("class_s.html",Courses=Courses)
 

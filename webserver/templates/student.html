@@ -42,44 +42,17 @@
 
 	<div id="course_panel" style="margin-left: 10%; margin-right: 10%;">
 		<div class="panel panel-default" style="width:30%;float: left; margin-left: 10%;margin-top: 5%">
-			<div class="panel-body">
-			    <a class="course_name" href="course.html">COMSW 4111 (Section: 001)</a>
-			</div>
-  			<div class="panel-footer">
-  				<div>Introduction to Databases</div>
-  				<div>Fall 2016</div>
-  				<div>Eugene Wu</div>
-  			</div>
-		</div>
-		<div class="panel panel-default" style="width:30%;float: left;margin-left: 10%;margin-top: 5%">
-			<div class="panel-body">
-			    COMSW 4771 (Section: 001)
-			</div>
-  			<div class="panel-footer">
-  				<div>Machine Learning</div>
-  				<div>Fall 2016</div>
-  				<div>Daniel Hsu</div>
-  			</div>
-		</div>
-		<div class="panel panel-default" style="width:30%;float: left;margin-left: 10%;margin-top: 5%">
-			<div class="panel-body">
-			    CSORW 4321 (Section: 001)
-			</div>
-  			<div class="panel-footer">
-  				<div>Analysis of Algorithms</div>
-  				<div>Fall 2016</div>
-  				<div>Mihalis Yannakakis</div>
-  			</div>
-		</div>
-		<div class="panel panel-default" style="width:30%;float: left;margin-left: 10%;margin-top: 5%">
-			<div class="panel-body">
-			    COMSE 6998 (Section: 005)
-			</div>
-  			<div class="panel-footer">
-  				<div>Cloud Computing & Big Data</div>
-  				<div>Fall 2016</div>
-  				<div>Sambit Sahu</div>
-  			</div>
+			{% for c in Courses %}
+				<div class="panel-body">
+				    <a class="course_name" href="course.html">{{c.id}}</a>
+				</div>
+  				<div class="panel-footer">
+  					<div>{{c.name}}</div>
+  					<div>{{c.syllabus}}</div>
+  					<div>{{c.credit}}</div>
+                                        <div>{{c.session}}</div>
+  				</div>
+			{% endfor %}
 		</div>
 	</div>
 
