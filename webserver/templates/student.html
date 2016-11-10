@@ -26,24 +26,24 @@
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
-	        <li class="active"><a href="#">Courses <span class="sr-only">(current)</span></a></li>
-	        <li><a href="#">Files</a></li>
-	        <li><a href="#">Assignments</a></li>
-	        <li><a href="#">Announcements</a></li>
-	        <li><a href="#">Q & A</a></li>
+	        <li id="course_nav" class="active"><a href="#">Courses <span class="sr-only">(current)</span></a></li>
+	        <li id="file_nav"><a href="#">Files</a></li>
+	        <li id="assignment_nav"><a href="#">Assignments</a></li>
+	        <li id="announcement_nav"><a href="#">Announcements</a></li>
+	        <li id="qa_nav"><a href="#">Q & A</a></li>
 	      </ul>
 	      
 	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="#">Account</a></li>
+	        <li id="account_nav"><a href="#">Account</a></li>
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
 
-	<div style="margin-left: 10%; margin-right: 10%;">
+	<div id="course_panel" style="margin-left: 10%; margin-right: 10%;">
 		<div class="panel panel-default" style="width:30%;float: left; margin-left: 10%;margin-top: 5%">
 			<div class="panel-body">
-			    COMSW 4111 (Section: 001)
+			    <a class="course_name" href="course.html">COMSW 4111 (Section: 001)</a>
 			</div>
   			<div class="panel-footer">
   				<div>Introduction to Databases</div>
@@ -82,9 +82,87 @@
   			</div>
 		</div>
 	</div>
+
+	<div id="file_panel">
+		file
+	</div>
+
+	<div id="assignment_panel">
+		<div style="width:40%;margin-left: 30%;margin-top: 2%">
+			<div style="margin-bottom: 2%">COMSW 4111  Introduction to Databases</div>
+			<ul class="list-group">
+			  	<li class="list-group-item"><span class="badge">Due: 2016/11/20</span>
+    			HW3
+  				</li>
+  				<li class="list-group-item"><span class="badge">Due: 2016/11/20</span>
+    			HW2
+  				</li>
+  				<li class="list-group-item"><span class="badge">Due: 2016/11/20</span>
+    			HW1
+  				</li>
+			</ul>	
+		</div>
+
+		<div style="width:40%;margin-left: 30%;margin-top: 2%">
+			<div style="margin-bottom: 2%">COMSW 4771  Machine Learning</div>
+			<ul class="list-group">
+			  	<li class="list-group-item"><span class="badge">Due: 2016/11/20</span>
+    			HW3
+  				</li>
+  				<li class="list-group-item"><span class="badge">Due: 2016/11/20</span>
+    			HW2
+  				</li>
+  				<li class="list-group-item"><span class="badge">Due: 2016/11/20</span>
+    			HW1
+  				</li>
+			</ul>	
+		</div>
+	</div>
+
+	<div id="announcement_panel">
+		ann
+	</div>
+
+	<div id="qa_panel">
+		qa
+	</div>
+
+	<div id="account_panel" style="margin-left: 30%; margin-right: 30%;">
+		<div class="list-group">
+  			<div class="list-group-item">
+    			<h4 class="list-group-item-heading">UNI</h4>
+    			<p class="list-group-item-text">fp2360</p>
+  			</div>
+  			<div class="list-group-item">
+    			<h4 class="list-group-item-heading">Name</h4>
+    			<p class="list-group-item-text">Fei Peng</p>
+  			</div>
+  			<div class="list-group-item">
+    			<h4 class="list-group-item-heading">Gender</h4>
+    			<p class="list-group-item-text">Male</p>
+  			</div>
+  			<div class="list-group-item">
+    			<h4 class="list-group-item-heading">Department</h4>
+    			<p class="list-group-item-text">Computer Science</p>
+  			</div>
+  			<div class="list-group-item">
+    			<h4 class="list-group-item-heading">Enroll Date</h4>
+    			<p class="list-group-item-text">2016-09-01</p>
+  			</div>
+  			<div class="list-group-item">
+    			<h4 class="list-group-item-heading">Email</h4>
+    			<p class="list-group-item-text">fp2360@columbia.edu</p>
+  			</div>
+  			<div class="list-group-item">
+    			<h4 class="list-group-item-heading">Contact Phone</h4>
+    			<p class="list-group-item-text">9172090367</p>
+  			</div>
+		</div>
+	</div>
 	
 	
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/Student.js"></script>
 </body>
 </html>

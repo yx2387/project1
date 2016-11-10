@@ -1,0 +1,202 @@
+<html style="height: 100%">
+<head>
+	<meta charset="UTF-8">
+	<title>COMSW 4111</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+	<style type="text/css">
+	a:hover{
+		cursor: pointer;
+	}
+	.hidden {
+	    visibility: hidden;
+	}
+
+	</style>
+</head>
+<body style="height:100%">
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="#">COMSW 4111</a>
+	    </div>
+
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li id="file_nav" class="active"><a href="#">Files<span class="sr-only">(current)</span></a></li>
+	        <li id="assignment_nav"><a href="#">Assignments</a></li>
+	        <li id="announcement_nav"><a href="#">Announcements</a></li>
+	        <li id="qa_nav"><a href="#">Q & A</a></li>
+	      </ul>
+	      
+	      <ul class="nav navbar-nav navbar-right">
+	        <li><a href="student.html">Back to Home</a></li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+
+	<div id="file_panel" style="margin-left: 30%;margin-right: 30%">
+		<ul class="list-group">
+  			<li class="list-group-item">
+  				<a>
+  					lec17
+  				</a>
+  			</li>
+  			<li class="list-group-item">
+  				<a>
+  					lec16
+  				</a>
+  			</li>
+  			<li class="list-group-item">
+  				<a>
+  					lec15
+  				</a>
+  			</li>
+		</ul>
+	</div>
+
+	<div id="assignment_panel" style="margin-left: 30%;margin-right: 30%">
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  			<div class="panel panel-default">
+    			<div class="panel-heading" role="tab" id="headingOne">
+      				<h4 class="panel-title">
+        				<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          				HW1
+        				</a><span class="badge" style="float:right">Due: 2016/11/20</span>
+      				</h4>
+    			</div>
+    			<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+      				<div class="panel-body">
+        				<div>Description:</div>
+        				<div>Points:</div>
+        				<div>Post time:</div>
+      				</div>
+    			</div>
+  			</div>
+	  		<div class="panel panel-default">
+	    		<div class="panel-heading" role="tab" id="headingTwo">
+	      			<h4 class="panel-title">
+	        			<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+	          			HW2
+	        			</a><span class="badge" style="float:right">Due: 2016/11/20</span>
+	      			</h4>
+	    		</div>
+	    		<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+	      			<div class="panel-body">
+	        			<div class="panel-body">
+		        			<div>Description:</div>
+		        			<div>Points:</div>
+		        			<div>Post time:</div>
+	      				</div>
+	      			</div>
+	    		</div>
+	  		</div>
+	  	</div>
+	</div>
+
+	<div id="announcement_panel" style="margin-left: 30%;margin-right: 30%">
+		<div class="panel-group">
+  			<div class="panel panel-default">
+    			<div class="panel-heading" role="tab">
+      				<h4 class="panel-title">
+      					HW5 Deadline
+      					<span class="badge" style="float:right">2016/11/20</span>
+      				</h4>
+    			</div>
+      			<div class="panel-body">
+        				Deadline is extented to 11.23!!
+      			</div>
+  			</div>
+  			<div class="panel panel-default">
+    			<div class="panel-heading" role="tab">
+      				<h4 class="panel-title">
+        				Admistrivia issues
+        				<span class="badge" style="float:right">2016/11/20</span>
+      				</h4>
+    			</div>
+        		<div class="panel-body">
+	        		HW3 is released!!
+      			</div>
+      		</div>
+    	</div>
+	</div>
+
+	<div id="qa_panel" style="margin-left: 30%;margin-right: 30%">
+		<div class="panel-group">
+  			<div class="panel panel-default">
+    			<div class="panel-heading" role="tab">
+      				<h4 class="list-group-item-heading">
+      					Binary classification
+      					<span class="badge" style="float:right">2016/11/20</span>
+      				</h4>
+      				<p class="list-group-item-text">Why w=z?</p>
+      				<small>Asked by:</small>
+      				<small>Yibo Xu</small>
+    			</div>
+      			<div class="panel-body">
+      				<div style="border-bottom: 1px solid #ddd;">
+      					<div>
+      						Answer 1
+      					</div>
+      					<div>
+      						<small>Answered by: Eugene Wu at 2016-11-08</small>
+      					</div>
+      				</div>
+      				<div style="border-bottom: 1px solid #ddd;">
+      					<div>
+      						Answer 2
+      					</div>
+      					<div>
+      						<small>Answered by: Eugene Wu at 2016-11-08</small>
+      					</div>
+      				</div>
+
+      			</div>
+  			</div>
+  			<div class="panel panel-default">
+    			<div class="panel-heading" role="tab">
+      				<h4 class="list-group-item-heading">
+      					BCNF
+      					<span class="badge" style="float:right">2016/11/20</span>
+      				</h4>
+      				<p class="list-group-item-text">Why w=z?</p>
+      				<small>Asked by:</small>
+      				<small>Yibo Xu</small>
+    			</div>
+      			<div class="panel-body">
+      				<div style="border-bottom: 1px solid #ddd;">
+      					<div>
+      						Answer 1
+      					</div>
+      					<div>
+      						<small>Answered by: Eugene Wu at 2016-11-08</small>
+      					</div>
+      				</div>
+      				<div style="border-bottom: 1px solid #ddd;">
+      					<div>
+      						Answer 2
+      					</div>
+      					<div>
+      						<small>Answered by: Eugene Wu at 2016-11-08</small>
+      					</div>
+      				</div>
+
+      			</div>
+  			</div>
+    	</div>
+	</div>
+	
+	
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/Course.js"></script>
+</body>
+</html>
