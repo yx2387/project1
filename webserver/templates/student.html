@@ -27,10 +27,8 @@
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
 	        <li id="course_nav" class="active"><a href="#">Courses <span class="sr-only">(current)</span></a></li>
-	        <li id="file_nav"><a href="#">Files</a></li>
-	        <li id="assignment_nav"><a href="#">Assignments</a></li>
-	        <li id="announcement_nav"><a href="#">Announcements</a></li>
-	        <li id="qa_nav"><a href="#">Q & A</a></li>
+	        <li id="assignment_nav"><a href="#">Coming Dues</a></li>
+	        <li id="qa_nav"><a href="#">My Questions</a></li>
 	      </ul>
 	      
 	      <ul class="nav navbar-nav navbar-right">
@@ -51,37 +49,14 @@
   					<div>{{c.name}}</div>
   					<div>{{c.syllabus}}</div>
   					<div>{{c.credit}}</div>
-                                        <div>{{c.session}}</div>
+                    <div>{{c.session}}</div>
   				</div>
 			</div>
 		{% endfor %}
 	</div>
 
-	<div id="file_panel" style="margin-left: 30%; margin-right: 30%;">
-		<div>
-			<h4>COMSW 4111 Introduction to Databases</h4>
-			<ul class="list-group">
-	  			<li class="list-group-item">
-	  				<a>
-	  					lec17
-	  				</a>
-	  			</li>
-	  			<li class="list-group-item">
-	  				<a>
-	  					lec16
-	  				</a>
-	  			</li>
-	  			<li class="list-group-item">
-	  				<a>
-	  					lec15
-	  				</a>
-	  			</li>
-			</ul>
-		</div>
-	</div>
-
-	<div id="assignment_panel">
-		<div style="width:40%;margin-left: 30%;margin-top: 2%">
+	<div id="assignment_panel" style="width:40%;margin-left: 30%;">
+		<div style="margin-top: 2%">
 			<div style="margin-bottom: 2%">COMSW 4111  Introduction to Databases</div>
 			<ul class="list-group">
 			  	<li class="list-group-item"><span class="badge">Due: 2016/11/20</span>
@@ -96,7 +71,7 @@
 			</ul>	
 		</div>
 
-		<div style="width:40%;margin-left: 30%;margin-top: 2%">
+		<div style="margin-top: 2%">
 			<div style="margin-bottom: 2%">COMSW 4771  Machine Learning</div>
 			<ul class="list-group">
 			  	<li class="list-group-item"><span class="badge">Due: 2016/11/20</span>
@@ -112,13 +87,67 @@
 		</div>
 	</div>
 
-	<div id="announcement_panel">
-		ann
-	</div>
+	<div id="qa_panel" class="panel-group" style="width:40%;margin-left: 30%;">
+  		<div class="panel panel-default" style="margin-top: 3%">
+    		<div class="panel-heading" role="tab">
+      			<h4 class="list-group-item-heading">
+      				Binary classification
+      				<span class="badge" style="float:right">2016/11/20</span>
+      			</h4>
+      			<p class="list-group-item-text">Why w=z?</p>
+      			<small>Asked by:</small>
+      			<small>Yibo Xu</small>
+    		</div>
+      		<div class="panel-body">
+      			<div style="border-bottom: 1px solid #ddd;">
+      				<div>
+      					Answer 1
+      				</div>
+      				<div>
+      					<small>Answered by: Eugene Wu at 2016-11-08</small>
+      				</div>
+      			</div>
+      			<div style="border-bottom: 1px solid #ddd;">
+      				<div>
+      					Answer 2
+      				</div>
+      				<div>
+      					<small>Answered by: Eugene Wu at 2016-11-08</small>
+      				</div>
+      			</div>
 
-	<div id="qa_panel">
-		qa
-	</div>
+      		</div>
+  		</div>
+  		<div class="panel panel-default" style="margin-top: 3%">
+    		<div class="panel-heading" role="tab">
+      			<h4 class="list-group-item-heading">
+      				BCNF
+      				<span class="badge" style="float:right">2016/11/20</span>
+      			</h4>
+      			<p class="list-group-item-text">Why w=z?</p>
+      			<small>Asked by:</small>
+      			<small>Yibo Xu</small>
+    		</div>
+      		<div class="panel-body">
+      			<div style="border-bottom: 1px solid #ddd;">
+      				<div>
+      					Answer 1
+      				</div>
+      				<div>
+      					<small>Answered by: Eugene Wu at 2016-11-08</small>
+      				</div>
+      			</div>
+      			<div style="border-bottom: 1px solid #ddd;">
+      				<div>
+      					Answer 2
+      				</div>
+      				<div>
+      					<small>Answered by: Eugene Wu at 2016-11-08</small>
+      				</div>
+      			</div>
+			</div>
+  		</div>
+  	</div>
 
 	<div id="account_panel" style="margin-left: 30%; margin-right: 30%;">
 		<div class="list-group">
