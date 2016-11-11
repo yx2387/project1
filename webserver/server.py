@@ -192,7 +192,7 @@ def another():
 
 @app.route('/home_i')
 def home_i():
-  return render_template("instructor.html")
+  return render_template("Instructor.html")
 
 @app.route('/home_s')
 def home_s():
@@ -250,6 +250,7 @@ def add():
 
 @app.route('/logout',)
 def logout():
+  session.pop('uni',None)
   flash('You have successfully logged out!')
   return redirect('/')
 

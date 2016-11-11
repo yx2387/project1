@@ -42,8 +42,8 @@
 	</nav>
 
 	<div id="course_panel" style="margin-left: 10%; margin-right: 10%;">
-		<div class="panel panel-default" style="width:30%;float: left; margin-left: 10%;margin-top: 5%">
-			{% for c in Courses %}
+		{% for c in Courses %}
+			<div class="panel panel-default" style="width:30%;float: left; margin-left: 10%;margin-top: 5%">
 				<div class="panel-body">
 				    <a class="course_name" href="course.html">{{c.id}}</a>
 				</div>
@@ -53,8 +53,8 @@
   					<div>{{c.credit}}</div>
                                         <div>{{c.session}}</div>
   				</div>
-			{% endfor %}
-		</div>
+			</div>
+		{% endfor %}
 	</div>
 
 	<div id="file_panel" style="margin-left: 30%; margin-right: 30%;">
