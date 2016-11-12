@@ -2,7 +2,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>COMSW 4111</title>
-	<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
 	<style type="text/css">
 	a:hover{
 		cursor: pointer;
@@ -48,39 +48,39 @@
     <div class="list-group">
         <div class="list-group-item">
           <h4 class="list-group-item-heading">Course ID</h4>
-          <p class="list-group-item-text">COMSW 4771</p>
+          <p class="list-group-item-text">{{Courses[0].id}}</p>
         </div>
         <div class="list-group-item">
           <h4 class="list-group-item-heading">Session</h4>
-          <p class="list-group-item-text">s001</p>
+          <p class="list-group-item-text">{{Courses[0].session}}</p>
         </div>
         <div class="list-group-item">
           <h4 class="list-group-item-heading">Course Name</h4>
-          <p class="list-group-item-text">Machine Learning</p>
+          <p class="list-group-item-text">{{Courses[0].name}}</p>
         </div>
         <div class="list-group-item">
           <h4 class="list-group-item-heading">Instructor</h4>
-          <p class="list-group-item-text">Daniel Hsu</p>
+          <p class="list-group-item-text">{{Courses[0].inst}}</p>
         </div>
         <div class="list-group-item">
           <h4 class="list-group-item-heading">Credit</h4>
-          <p class="list-group-item-text">3</p>
+          <p class="list-group-item-text">{{Courses[0].credit}}</p>
         </div>
         <div class="list-group-item">
           <h4 class="list-group-item-heading">Semester</h4>
-          <p class="list-group-item-text">Fall 2016</p>
+          <p class="list-group-item-text">{{Courses[0].semester}} {{Courses[0].year}}</p>
         </div>
         <div class="list-group-item">
           <h4 class="list-group-item-heading">Time</h4>
-          <p class="list-group-item-text">Mon Wed 1:10-2:25pm</p>
+          <p class="list-group-item-text">{{Courses[0].time}}</p>
         </div>
         <div class="list-group-item">
           <h4 class="list-group-item-heading">Location</h4>
-          <p class="list-group-item-text">NWC 501</p>
+          <p class="list-group-item-text">{{Courses[0].location}}</p>
         </div>
         <div class="list-group-item">
           <h4 class="list-group-item-heading">Syllabus</h4>
-          <p class="list-group-item-text">blabla</p>
+          <p class="list-group-item-text">{{Courses[0].syllabus}}</p>
         </div>
     </div>
   </div>
@@ -249,8 +249,8 @@
 	</div>
 	
 	
-	<script type="text/javascript" src="../static/js/jquery.min.js"></script>
-	<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="../static/js/Course.js"></script>
+	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/static/js/Course.js"></script>
 </body>
 </html>

@@ -186,23 +186,53 @@ def index():
 # the functions for each app.route needs to have different names
 #
 
+@app.route('/get_course/<cid>/<csession>')
+def get_course(cid,csession):
+  print cid,csession
+  cursor = g.conn.execute(
+  """select c.course_id,c.session,c.course_name,o.year,o.season,u.user_name,c.credit,o.time,o.location,c.syllabus \
+  from course c, open o,  instruct i,users u \
+  where u.user_id=i.user_id and i.open_cid = o.open_cid 
+  and o.course_id = %s and o.session = %s and c.course_id = o.course_id and o.session = c.session"""
+  , cid,csession)
+  Courses = [dict(id=row[0], session=row[1], name=row[2], year=row[3], season=row[4], inst=row[5], 
+  credit=row[6], time=row[7], location=row[8], syllabus=row[9]) for row in cursor.fetchall()]
+  cursor.close()
+  print Courses
+  return render_template("course.html",Courses=Courses)
+
 @app.route('/another')
 def another():
   return render_template("anotherfile.html")
 
 @app.route('/home_i')
 def home_i():
-  return render_template("Instructor.html")
+  return render_template("instructor.html")
 
 @app.route('/home_s')
 def home_s():
   if 'uni' in session:
     print session['uni']
-    cursor = g.conn.execute("select c.course_id,c.session,c.course_name,c.syllabus,c.credit from course c, open o, take t where t.user_id = %s and t.open_cid = o.open_cid and o.course_id = c.course_id and o.session = c.session", session['uni'])
-    Courses = [dict(id=row[0], session=row[1], name=row[2], syllabus=row[3], credit=row[4]) for row in cursor.fetchall()]
+    cursor = g.conn.execute(
+    """select c.course_id,c.session,c.course_name,o.year,o.season,u.user_name 
+    from course c, open o, take t, instruct i,users u 
+    where u.user_id=i.user_id and i.open_cid = o.open_cid and t.user_id = %s and t.open_cid = o.open_cid 
+    and o.course_id = c.course_id and o.session = c.session"""
+    , session['uni'])
+    Courses = [dict(id=row[0], session=row[1], name=row[2], year=row[3], season=row[4], inst=row[5]) for row in cursor.fetchall()]
     cursor.close()
+
+    cursor = g.conn.execute(
+    """select u.user_id, u.user_name, u.gender, d.dep_name, s.enroll_date, u.email, u.phone
+    from users u, belongs b, department d, student s
+    where u.user_id = %s and u.user_id = s.user_id and u.user_id = b.user_id and b.dep_id = d.dep_id
+    """
+    ,session['uni'])
+    Userinfo = [dict(id=row[0], name=row[1], gender=row[2], dep=row[3], enroll=row[4], email=row[5], phone=row[6]) for row in cursor.fetchall()]
+    cursor.close()
+
     print Courses
-    return render_template("student.html",Courses=Courses)
+    return render_template("student.html",Courses=Courses,Userinfo=Userinfo)
   else:
     return redirect('/')
 
