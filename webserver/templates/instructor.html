@@ -43,47 +43,20 @@
 	</nav>
 
 	<div id="course_panel" style="margin-left: 10%; margin-right: 10%;">
-		<div class="panel panel-default" style="width:30%;float: left; margin-left: 10%;margin-top: 5%">
-			<div class="panel-body">
-			    <a class="course_name" href="course.html">COMSW 4111 (Section: 001)</a>
+		{% for c in Courses %}
+			<div class="panel panel-default" style="width:30%;float: left; margin-left: 10%;margin-top: 5%">
+				<div class="panel-body">
+				    <a class="course_name" href="{{ url_for('get_course',cid =c.id,csession=c.session,cyear=c.year,cseason=c.season)}}">{{c.id}} (Section: {{c.session}})</a>
+				</div>
+  				<div class="panel-footer">
+  					<div>{{c.name}}</div>
+  					<div>{{c.season}} {{c.year}}</div>
+  					<div>{{c.inst}}</div>
+  				</div>
 			</div>
-  			<div class="panel-footer">
-  				<div>Introduction to Databases</div>
-  				<div>Fall 2016</div>
-  				<div>Eugene Wu</div>
-  			</div>
-		</div>
-		<div class="panel panel-default" style="width:30%;float: left;margin-left: 10%;margin-top: 5%">
-			<div class="panel-body">
-			    COMSW 4771 (Section: 001)
-			</div>
-  			<div class="panel-footer">
-  				<div>Machine Learning</div>
-  				<div>Fall 2016</div>
-  				<div>Daniel Hsu</div>
-  			</div>
-		</div>
-		<div class="panel panel-default" style="width:30%;float: left;margin-left: 10%;margin-top: 5%">
-			<div class="panel-body">
-			    CSORW 4321 (Section: 001)
-			</div>
-  			<div class="panel-footer">
-  				<div>Analysis of Algorithms</div>
-  				<div>Fall 2016</div>
-  				<div>Mihalis Yannakakis</div>
-  			</div>
-		</div>
-		<div class="panel panel-default" style="width:30%;float: left;margin-left: 10%;margin-top: 5%">
-			<div class="panel-body">
-			    COMSE 6998 (Section: 005)
-			</div>
-  			<div class="panel-footer">
-  				<div>Cloud Computing & Big Data</div>
-  				<div>Fall 2016</div>
-  				<div>Sambit Sahu</div>
-  			</div>
-		</div>
+		{% endfor %}
 	</div>
+
 
 	<div id="file_panel" style="width:40%;margin-left: 30%;margin-bottom: 10%">
 		<form action="upload" method="post" enctype="multipart/form-data">
@@ -157,85 +130,38 @@
 			</form>
 		</div>
 		<h2>Previous assignments</h2>
+
+		{% for c in Courses %}
 		<div style="margin-top: 2%">
-			<h4 style="margin-bottom: 2%">COMSW 4111  Introduction to Databases</h4>
+			<h4 style="margin-bottom: 2%">{{c.id}}  {{c.name}} {{c.session}} {{c.year}} {{c.season}}</h4>
 			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-	  			<div class="panel panel-default">
-	    			<div class="panel-heading" role="tab" id="headingOne">
+	  			
+				{% for a in Assigns %}
+				{% if c.oid == a.oid %}
+				<div class="panel panel-default">
+	    			<div class="panel-heading" role="tab" id="{{a.id}}">
 	      				<h4 class="panel-title">
-	        				<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-	          				HW1
-	        				</a><span class="badge" style="float:right">Due: 2016/11/20</span>
+	        				<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{a.id}}" aria-expanded="true" aria-controls="collapseOne">
+	          				{{a.title}}
+	        				</a><span class="badge" style="float:right">Due: {{a.due}}</span>
 	      				</h4>
 	    			</div>
-	    			<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+	    			<div id="collapse{{a.id}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="{{a.id}}">
 	      				<div class="panel-body">
-	        				<div>Description:</div>
-	        				<div>Points:</div>
-	        				<div>Post time:</div>
+	        				<div>Description: {{a.des}}</div>
+	        				<div>Points: {{a.points}}</div>
+	        				<div>Post time: {{a.time}}</div>
 	      				</div>
 	    			</div>
 	  			</div>
-		  		<div class="panel panel-default">
-		    		<div class="panel-heading" role="tab" id="headingTwo">
-		      			<h4 class="panel-title">
-		        			<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-		          			HW2
-		        			</a><span class="badge" style="float:right">Due: 2016/11/20</span>
-		      			</h4>
-		    		</div>
-		    		<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-		      			<div class="panel-body">
-		        			<div class="panel-body">
-			        			<div>Description:</div>
-			        			<div>Points:</div>
-			        			<div>Post time:</div>
-		      				</div>
-		      			</div>
-		    		</div>
-		  		</div>
+				{% endif %}
+				{% endfor %}
+
 	  		</div>
 		</div>
+		{% endfor %}
 
-		<div style="margin-top: 2%">
-			<h4 style="margin-bottom: 2%">COMSW 4771  Machine Learning</h4>
-			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-	  			<div class="panel panel-default">
-	    			<div class="panel-heading" role="tab" id="headingThree">
-	      				<h4 class="panel-title">
-	        				<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-	          				HW1
-	        				</a><span class="badge" style="float:right">Due: 2016/11/20</span>
-	      				</h4>
-	    			</div>
-	    			<div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
-	      				<div class="panel-body">
-	        				<div>Description:</div>
-	        				<div>Points:</div>
-	        				<div>Post time:</div>
-	      				</div>
-	    			</div>
-	  			</div>
-		  		<div class="panel panel-default">
-		    		<div class="panel-heading" role="tab" id="headingFour">
-		      			<h4 class="panel-title">
-		        			<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-		          			HW2
-		        			</a><span class="badge" style="float:right">Due: 2016/11/20</span>
-		      			</h4>
-		    		</div>
-		    		<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-		      			<div class="panel-body">
-		        			<div class="panel-body">
-			        			<div>Description:</div>
-			        			<div>Points:</div>
-			        			<div>Post time:</div>
-		      				</div>
-		      			</div>
-		    		</div>
-		  		</div>
-		  	</div>
-		</div>
+
 	</div>
 
 	<div id="announcement_panel" style="width:40%;margin-left: 30%;margin-bottom: 10%">
@@ -319,47 +245,24 @@
 
 	<div id="qa_panel" style="width:70%;margin-left: 15%;margin-bottom: 10%">
 		<div>
-			<h4>COMSW 4111 Introduction to Databases</h4>
 			<div class="panel-group">
+
+				{% for q in Ques %}
 				<div style="margin-top: 3%;">
 					<div class="panel panel-default" style="width:50%;display: inline-block;vertical-align: top">
 		    			<div class="panel-heading" role="tab">
 		      				<h4 class="list-group-item-heading">
-		      					Binary classification
-		      					<span class="badge" style="float:right">2016/11/20</span>
+		      					{{q.title}}
+		      					<span class="badge" style="float:right">{{q.time}}</span>
 		      				</h4>
-		      				<p class="list-group-item-text">Why w=z?</p>
+		      				<p class="list-group-item-text">{{q.des}}</p>
 		      				<small>Asked by:</small>
-		      				<small>Yibo Xu</small>
+		      				<small>{{q.name}}</small>
 		    			</div>
 		      			<div class="panel-body">
 		      				<div style="border-bottom: 1px solid #ddd;">
 		      					<div>
 		      						Answer 1
-		      					</div>
-		      					<div>
-		      						<small>Answered by: Eugene Wu at 2016-11-08</small>
-		      					</div>
-		      				</div>
-		      				<div style="border-bottom: 1px solid #ddd;">
-		      					<div>
-		      						Answer 2
-		      					</div>
-		      					<div>
-		      						<small>Answered by: Eugene Wu at 2016-11-08</small>
-		      					</div>
-		      				</div>
-		      				<div style="border-bottom: 1px solid #ddd;">
-		      					<div>
-		      						Answer 2
-		      					</div>
-		      					<div>
-		      						<small>Answered by: Eugene Wu at 2016-11-08</small>
-		      					</div>
-		      				</div>
-		      				<div style="border-bottom: 1px solid #ddd;">
-		      					<div>
-		      						Answer 2
 		      					</div>
 		      					<div>
 		      						<small>Answered by: Eugene Wu at 2016-11-08</small>
@@ -372,57 +275,10 @@
 				   		<button class="btn btn-primary" style="margin-top: 3%">Answer</button>
 					</div>
 				</div>
-				<div style="margin-top: 3%;">
-					<div class="panel panel-default" style="width:50%;display: inline-block;vertical-align: top">
-		    			<div class="panel-heading" role="tab">
-		      				<h4 class="list-group-item-heading">
-		      					Binary classification
-		      					<span class="badge" style="float:right">2016/11/20</span>
-		      				</h4>
-		      				<p class="list-group-item-text">Why w=z?</p>
-		      				<small>Asked by:</small>
-		      				<small>Yibo Xu</small>
-		    			</div>
-		      			<div class="panel-body">
-		      				<div style="border-bottom: 1px solid #ddd;">
-		      					<div>
-		      						Answer 1
-		      					</div>
-		      					<div>
-		      						<small>Answered by: Eugene Wu at 2016-11-08</small>
-		      					</div>
-		      				</div>
-		      				<div style="border-bottom: 1px solid #ddd;">
-		      					<div>
-		      						Answer 2
-		      					</div>
-		      					<div>
-		      						<small>Answered by: Eugene Wu at 2016-11-08</small>
-		      					</div>
-		      				</div>
-		      				<div style="border-bottom: 1px solid #ddd;">
-		      					<div>
-		      						Answer 2
-		      					</div>
-		      					<div>
-		      						<small>Answered by: Eugene Wu at 2016-11-08</small>
-		      					</div>
-		      				</div>
-		      				<div style="border-bottom: 1px solid #ddd;">
-		      					<div>
-		      						Answer 2
-		      					</div>
-		      					<div>
-		      						<small>Answered by: Eugene Wu at 2016-11-08</small>
-		      					</div>
-		      				</div>
-		      			</div>
-		  			</div>
-		  			<div style="width:40%;display: inline-block;margin-left: 5%">
-				   		<textarea class="form-control" rows="5"></textarea>
-				   		<button class="btn btn-primary" style="margin-top: 3%">Answer</button>
-					</div>
-				</div>
+
+
+
+				{% endfor %}
 	  		</div>	
 		</div>
 	</div>
@@ -431,31 +287,31 @@
 		<div class="list-group">
   			<div class="list-group-item">
     			<h4 class="list-group-item-heading">UNI</h4>
-    			<p class="list-group-item-text">fp2360</p>
+    			<p class="list-group-item-text">{{Userinfo[0].id}}</p>
   			</div>
   			<div class="list-group-item">
     			<h4 class="list-group-item-heading">Name</h4>
-    			<p class="list-group-item-text">Fei Peng</p>
+    			<p class="list-group-item-text">{{Userinfo[0].name}}</p>
   			</div>
   			<div class="list-group-item">
     			<h4 class="list-group-item-heading">Gender</h4>
-    			<p class="list-group-item-text">Male</p>
+    			<p class="list-group-item-text">{{Userinfo[0].gender}}</p>
   			</div>
   			<div class="list-group-item">
     			<h4 class="list-group-item-heading">Department</h4>
-    			<p class="list-group-item-text">Computer Science</p>
+    			<p class="list-group-item-text">{{Userinfo[0].dep}}</p>
   			</div>
   			<div class="list-group-item">
-    			<h4 class="list-group-item-heading">Enroll Date</h4>
-    			<p class="list-group-item-text">2016-09-01</p>
+    			<h4 class="list-group-item-heading">Title</h4>
+    			<p class="list-group-item-text">{{Userinfo[0].title}}</p>
   			</div>
   			<div class="list-group-item">
     			<h4 class="list-group-item-heading">Email</h4>
-    			<p class="list-group-item-text">fp2360@columbia.edu</p>
+    			<p class="list-group-item-text">{{Userinfo[0].email}}</p>
   			</div>
   			<div class="list-group-item">
     			<h4 class="list-group-item-heading">Contact Phone</h4>
-    			<p class="list-group-item-text">9172090367</p>
+    			<p class="list-group-item-text">{{Userinfo[0].phone}}</p>
   			</div>
 		</div>
 	</div>
