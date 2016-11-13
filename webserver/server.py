@@ -173,8 +173,10 @@ def index():
   # render_template looks in the templates/ folder for files.
   # for example, the below file reads template/index.html
   #
-  if 'uni' in session:
-    return 'Logged in as %s' % escape(session['uni'])
+  if 's' in session:
+    return redirect('/home_s')
+  elif 'i' in session:
+    return redirect('/home_i')
   return render_template("login.html")
 
 #
@@ -232,14 +234,14 @@ def home_i():
 
 @app.route('/home_s')
 def home_s():
-  if 'uni' in session:
-    print session['uni']
+  if 's' in session:
+    print session['s']
     cursor = g.conn.execute(
     """select c.course_id,c.session,c.course_name,o.year,o.season,u.user_name 
     from course c, open o, take t, instruct i,users u 
     where u.user_id=i.user_id and i.open_cid = o.open_cid and t.user_id = %s and t.open_cid = o.open_cid 
     and o.course_id = c.course_id and o.session = c.session"""
-    , session['uni'])
+    , session['s'])
     Courses = [dict(id=row[0], session=row[1], name=row[2], year=row[3], season=row[4], inst=row[5]) for row in cursor.fetchall()]
     cursor.close()
 
@@ -248,7 +250,7 @@ def home_s():
     from users u, belongs b, department d, student s
     where u.user_id = %s and u.user_id = s.user_id and u.user_id = b.user_id and b.dep_id = d.dep_id
     """
-    ,session['uni'])
+    ,session['s'])
     Userinfo = [dict(id=row[0], name=row[1], gender=row[2], dep=row[3], enroll=row[4], email=row[5], phone=row[6]) for row in cursor.fetchall()]
     cursor.close()
 
@@ -259,7 +261,7 @@ def home_s():
     from question q, ask a, users u
     where u.user_id = %s and u.user_id = a.user_id and q.que_id = a.que_id
     """
-    ,session['uni'])
+    ,session['s'])
     Ques = [dict(title=row[0], des=row[1], name=row[2], time=row[3], id=row[4]) for row in cursor.fetchall()]
     print Ques
     cursor.close()
@@ -270,7 +272,7 @@ def home_s():
     from question q, reply r, users u1, users u2, ask a
     where u1.user_id = %s and u1.user_id = a.user_id and q.que_id = a.que_id and r.que_id = q.que_id and r.user_id = u2.user_id
     """
-    ,session['uni'])
+    ,session['s'])
     Ans = [dict(content=row[0], name=row[1], time=row[2], id=row[3]) for row in cursor.fetchall()]
     print Ans
     cursor.close()
@@ -303,10 +305,11 @@ def log():
     flash("User ID doesnt't exist!")
   elif res[0] == password:
     flash("Login Successful!")
-    session['uni'] = request.form['uni']
     if res[1] == "Student":
+      session['s'] = request.form['uni']
       return redirect('/home_s')
     else:
+      session['i'] = request.form['uni']
       return redirect('/home_i')
   else:
     flash("Password Incorrect!")
@@ -322,12 +325,17 @@ def add():
   g.conn.execute(text(cmd), name1 = name, name2 = name);
   return redirect('/')
 
-@app.route('/logout',)
-def logout():
-  session.pop('uni',None)
+@app.route('/logout_s',)
+def logout_s():
+  session.pop('s',None)
   flash('You have successfully logged out!')
   return redirect('/')
 
+@app.route('/logout_i',)
+def logout_i():
+  session.pop('i',None)
+  flash('You have successfully logged out!')
+  return redirect('/')
 
 @app.route('/login')
 def login():
