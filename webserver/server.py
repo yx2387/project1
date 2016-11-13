@@ -19,10 +19,15 @@ import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import escape, flash, Flask, request, render_template, g, redirect, Response, session
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER = '/path/to/the/uploads'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 app.secret_key = 'some_secret'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #
 # The following uses the postgresql test.db -- you can use this for debugging purposes
@@ -62,17 +67,12 @@ engine = create_engine(DATABASEURI)
 # 
 # The setup code should be deleted once you switch to using the Part 2 postgresql database
 #
-engine.execute("""DROP TABLE IF EXISTS test;""")
-engine.execute("""CREATE TABLE IF NOT EXISTS test (
-  id serial,
-  name text
-);""")
-engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace');""")
 #
 # END SQLITE SETUP CODE
 #
 
-
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 @app.before_request
 def before_request():
@@ -199,7 +199,28 @@ def get_course(cid,csession):
   credit=row[6], time=row[7], location=row[8], syllabus=row[9]) for row in cursor.fetchall()]
   cursor.close()
   print Courses
-  return render_template("course.html",Courses=Courses)
+
+  cursor = g.conn.execute(
+  """select a.assign_id, a.assign_title, a.assign_description, a.points, a.due_date, p.time
+  from postassignment p, assignment a, open o, course c
+  where o.course_id = %s and o.session = %s and c.course_id = o.course_id and o.session = c.session and p.open_cid = o.open_cid
+  and p.assign_id = a.assign_id"""
+  ,cid , csession)
+  Assigns = [dict(id=row[0], title=row[1], des=row[2], points=row[3], due=row[4], time=row[5]) for row in cursor.fetchall()]
+  print Assigns
+  cursor.close()
+  
+  cursor = g.conn.execute(
+  """select a.ann_id, a.ann_title, a.ann_content, p.time
+  from postannouncement p, announcement a, open o, course c
+  where o.course_id = %s and o.session = %s and c.course_id = o.course_id and o.session = c.session and p.open_cid = o.open_cid
+  and p.ann_id = a.ann_id"""
+  ,cid , csession)
+  Anns = [dict(id=row[0], title=row[1], des=row[2], time=row[3]) for row in cursor.fetchall()]
+  print Anns
+  cursor.close()
+
+  return render_template("course.html",Courses=Courses,Assigns = Assigns,Anns=Anns)
 
 @app.route('/another')
 def another():
@@ -232,7 +253,30 @@ def home_s():
     cursor.close()
 
     print Courses
-    return render_template("student.html",Courses=Courses,Userinfo=Userinfo)
+
+    cursor = g.conn.execute(
+    """select q.que_title, q.que_description, u.user_name, a.time, q.que_id
+    from question q, ask a, users u
+    where u.user_id = %s and u.user_id = a.user_id and q.que_id = a.que_id
+    """
+    ,session['uni'])
+    Ques = [dict(title=row[0], des=row[1], name=row[2], time=row[3], id=row[4]) for row in cursor.fetchall()]
+    print Ques
+    cursor.close()
+
+
+    cursor = g.conn.execute(
+    """select r.ans_content, u2.user_name, r.time, q.que_id
+    from question q, reply r, users u1, users u2, ask a
+    where u1.user_id = %s and u1.user_id = a.user_id and q.que_id = a.que_id and r.que_id = q.que_id and r.user_id = u2.user_id
+    """
+    ,session['uni'])
+    Ans = [dict(content=row[0], name=row[1], time=row[2], id=row[3]) for row in cursor.fetchall()]
+    print Ans
+    cursor.close()
+
+
+    return render_template("student.html",Courses=Courses,Userinfo=Userinfo, Ques = Ques,Ans=Ans)
   else:
     return redirect('/')
 
@@ -289,6 +333,10 @@ def logout():
 def login():
     abort(401)
     this_is_never_executed()
+
+
+
+
 
 
 if __name__ == "__main__":

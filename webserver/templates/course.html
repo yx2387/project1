@@ -38,7 +38,7 @@
 	      </ul>
 	      
 	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="student.html">Back to Home</a></li>
+	        <li><a href="{{url_for('home_s')}}">Back to Home</a></li>
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
@@ -107,68 +107,45 @@
 
 	<div id="assignment_panel" style="margin-left: 30%;margin-right: 30%">
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+			{% for a in Assigns %}
   			<div class="panel panel-default">
-    			<div class="panel-heading" role="tab" id="headingOne">
+    			<div class="panel-heading" role="tab" id="{{a.id}}">
       				<h4 class="panel-title">
         				<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          				HW1
-        				</a><span class="badge" style="float:right">Due: 2016/11/20</span>
+          				{{a.title}}
+        				</a><span class="badge" style="float:right">Due: {{a.due}}</span>
       				</h4>
     			</div>
-    			<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+    			<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="{{a.id}}">
       				<div class="panel-body">
-        				<div>Description:</div>
-        				<div>Points:</div>
-        				<div>Post time:</div>
+        				<div>Description: {{a.des}}</div>
+        				<div>Points: {{a.points}}</div>
+        				<div>Post time: {{a.time}}</div>
       				</div>
     			</div>
   			</div>
-	  		<div class="panel panel-default">
-	    		<div class="panel-heading" role="tab" id="headingTwo">
-	      			<h4 class="panel-title">
-	        			<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-	          			HW2
-	        			</a><span class="badge" style="float:right">Due: 2016/11/20</span>
-	      			</h4>
-	    		</div>
-	    		<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-	      			<div class="panel-body">
-	        			<div class="panel-body">
-		        			<div>Description:</div>
-		        			<div>Points:</div>
-		        			<div>Post time:</div>
-	      				</div>
-	      			</div>
-	    		</div>
-	  		</div>
+			{% endfor %}
 	  	</div>
 	</div>
 
 	<div id="announcement_panel" style="margin-left: 30%;margin-right: 30%">
 		<div class="panel-group">
-  			<div class="panel panel-default">
+  			
+			{% for a in Anns %}
+			<div class="panel panel-default">
     			<div class="panel-heading" role="tab">
       				<h4 class="panel-title">
-      					HW5 Deadline
-      					<span class="badge" style="float:right">2016/11/20</span>
+      					{{a.title}}
+      					<span class="badge" style="float:right">{{a.time}}</span>
       				</h4>
     			</div>
       			<div class="panel-body">
-        				Deadline is extented to 11.23!!
-      			</div>
-  			</div>
-  			<div class="panel panel-default">
-    			<div class="panel-heading" role="tab">
-      				<h4 class="panel-title">
-        				Admistrivia issues
-        				<span class="badge" style="float:right">2016/11/20</span>
-      				</h4>
-    			</div>
-        		<div class="panel-body">
-	        		HW3 is released!!
-      			</div>
-      		</div>
-    	</div>
+        				{{a.des}}
+      			</div>			
+			</div>
+			{% endfor %}
+
+    		</div>
 	</div>
 
 	<div id="qa_panel" style="margin-left: 30%;margin-right: 30%">

@@ -87,65 +87,35 @@
 	</div>
 
 	<div id="qa_panel" class="panel-group" style="width:40%;margin-left: 30%;">
+
+		{% for q in Ques %}
   		<div class="panel panel-default" style="margin-top: 3%">
     		<div class="panel-heading" role="tab">
       			<h4 class="list-group-item-heading">
-      				Binary classification
-      				<span class="badge" style="float:right">2016/11/20</span>
+      				{{q.title}}
+      				<span class="badge" style="float:right">{{q.time}}</span>
       			</h4>
-      			<p class="list-group-item-text">Why w=z?</p>
+      			<p class="list-group-item-text">{{q.des}}</p>
       			<small>Asked by:</small>
-      			<small>Yibo Xu</small>
+      			<small>{{q.name}}</small>
     		</div>
       		<div class="panel-body">
+		{% for a in Ans %}
+			{% if q.id == a.id %}
       			<div style="border-bottom: 1px solid #ddd;">
       				<div>
-      					Answer 1
+      					{{a.content}}
       				</div>
       				<div>
-      					<small>Answered by: Eugene Wu at 2016-11-08</small>
+      					<small>Answered by: {{a.name}}  at {{a.time}}</small>
       				</div>
       			</div>
-      			<div style="border-bottom: 1px solid #ddd;">
-      				<div>
-      					Answer 2
-      				</div>
-      				<div>
-      					<small>Answered by: Eugene Wu at 2016-11-08</small>
-      				</div>
-      			</div>
-
+			{% endif %}
+		{% endfor %}
       		</div>
   		</div>
-  		<div class="panel panel-default" style="margin-top: 3%">
-    		<div class="panel-heading" role="tab">
-      			<h4 class="list-group-item-heading">
-      				BCNF
-      				<span class="badge" style="float:right">2016/11/20</span>
-      			</h4>
-      			<p class="list-group-item-text">Why w=z?</p>
-      			<small>Asked by:</small>
-      			<small>Yibo Xu</small>
-    		</div>
-      		<div class="panel-body">
-      			<div style="border-bottom: 1px solid #ddd;">
-      				<div>
-      					Answer 1
-      				</div>
-      				<div>
-      					<small>Answered by: Eugene Wu at 2016-11-08</small>
-      				</div>
-      			</div>
-      			<div style="border-bottom: 1px solid #ddd;">
-      				<div>
-      					Answer 2
-      				</div>
-      				<div>
-      					<small>Answered by: Eugene Wu at 2016-11-08</small>
-      				</div>
-      			</div>
-			</div>
-  		</div>
+		{% endfor %}
+
   	</div>
 
 	<div id="account_panel" style="margin-left: 30%; margin-right: 30%;">
