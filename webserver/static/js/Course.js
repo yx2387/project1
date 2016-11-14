@@ -12,8 +12,8 @@ $(document).ready(function(){
 		});
 	});
 
-	// $("#modalShow").on('hide.bs.modal', function () {
-	// 	var current_index = $("#tabs").tabs("option","active");
-	// 	$("#tabs").tabs('load',current_index);
-	// });
+	$("#modalShow").on('hide.bs.modal', function () {
+		var current_index = $("#tabs").tabs("option","active");
+		$("#tabs").tabs('load',current_index);
+	});
 });
