@@ -341,12 +341,12 @@ def get_course(cid,csession,cyear,cseason,uid):
 #  print Courses
 
   cursor = g.conn.execute(
-  """select a.assign_id, a.assign_title, a.assign_description, a.points, a.due_date, p.time
+  """select a.assign_id, a.assign_title, a.assign_description, a.points, a.due_date, p.time, a.assign_file
   from postassignment p, assignment a, open o, course c
   where o.course_id = %s and o.session = %s and c.course_id = o.course_id and o.session = c.session and p.open_cid = o.open_cid
   and p.assign_id = a.assign_id and o.year = %s and o.season = %s"""
   ,cid , csession,cyear,cseason)
-  Assigns = [dict(id=row[0], title=row[1], des=row[2], points=row[3], due=row[4], time=row[5]) for row in cursor.fetchall()]
+  Assigns = [dict(id=row[0], title=row[1], des=row[2], points=row[3], due=row[4], time=row[5], file=row[6]) for row in cursor.fetchall()]
 #  print Assigns
   cursor.close()
   
@@ -385,7 +385,18 @@ def get_course(cid,csession,cyear,cseason,uid):
   cursor.close()
 
 
-  return render_template("course.html",Courses=Courses,Assigns = Assigns,Anns=Anns,Ques=Ques,Ans=Ans,uid=uid)
+  cursor = g.conn.execute(
+  """select distinct f.file_name, f.file_content
+  from upload p, file f, open o, course c 
+  where o.course_id = %s and o.session = %s and c.course_id = o.course_id and o.session = c.session and p.open_cid = o.open_cid
+  and p.file_id = f.file_id and o.year = %s and o.season = %s"""
+  ,cid , csession,cyear,cseason)
+  File = [dict(name=row[0], content=row[1]) for row in cursor.fetchall()]
+#  print Anns
+  cursor.close()
+
+
+  return render_template("course.html",Courses=Courses,Assigns = Assigns,Anns=Anns,Ques=Ques,Ans=Ans,uid=uid,File=File)
 
 @app.route('/another')
 def another():
