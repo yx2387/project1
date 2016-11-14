@@ -11,6 +11,21 @@
 	</style>
 </head>
 <body style="height:100%">
+	<div id="modalShow" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h5 class="modal-title">Message</h5>
+				</div>
+				<div class="modal-body">
+					<div id="showText" class="modal-body" style="text-align:center;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<nav class="navbar navbar-default">
 	  <div class="container-fluid">
 	    <!-- Brand and toggle get grouped for better mobile display -->
@@ -59,7 +74,7 @@
 
 
 	<div id="file_panel" style="width:40%;margin-left: 30%;margin-bottom: 10%">
-		<form action="upload" method="post" enctype="multipart/form-data">
+		<form id="file_form" action="upload" method="post" enctype="multipart/form-data">
 			<div class="form-group">
 			    <label>Course:</label>
 			    <select type="text" class="form-control" name="course">
@@ -243,14 +258,11 @@
 		      			</div>
 
 		  			</div>
-					<form method="POST" action="{{ url_for('ans',uid = Userinfo[0].id,qid=q.id )}}" style="width:40%;display: inline-block;margin-left: 5%">
+					<div style="width:40%;display: inline-block;margin-left: 5%">
 				   		<textarea name=content class="form-control" rows="5"></textarea>
-				   		<button type="submit" class="btn btn-primary" style="margin-top: 3%">Answer</button>
-					</form>
+				   		<button id="qa_answer" type="submit" uid="{{Userinfo[0].id}}" qid="{{q.id}}" class="btn btn-primary" style="margin-top: 3%">Answer</button>
+					</div>
 				</div>
-
-
-
 				{% endfor %}
 	  		</div>	
 		</div>

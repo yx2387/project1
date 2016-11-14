@@ -74,5 +74,8 @@ $(document).ready(function(){
 		$("#qa_panel").show();
 	});
 
-
+	$("#qa_ask").click(function(){
+		$("#showText").text("Answer Successfully!");
+		$("#modalShow").modal();
+	});
 });
