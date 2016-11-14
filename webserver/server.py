@@ -311,6 +311,10 @@ def ask(uid,oid):
 #  uid = request.form['uid']
   title = request.form['title']
   des = request.form['des']
+  if not title:
+    return 'ERROR: Empty title!'
+  if not des:
+    return 'ERROR: Empty description!'
 #  oid = request.form['oid']
   print uid
   print oid
