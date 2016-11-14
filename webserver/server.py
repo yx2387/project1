@@ -20,6 +20,7 @@ from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import escape, flash, Flask, request, render_template, g, redirect, Response, session
 from werkzeug.utils import secure_filename
+from datetime import datetime
 
 UPLOAD_FOLDER = '/path/to/the/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -188,17 +189,39 @@ def index():
 # the functions for each app.route needs to have different names
 #
 
-@app.route('/get_course/<cid>/<csession>/<cyear>/<cseason>')
-def get_course(cid,csession,cyear,cseason):
+
+
+@app.route('/ask/<uid>/<oid>', methods=['POST'])
+def ask(uid,oid):
+#  uid = request.form['uid']
+  title = request.form['title']
+  des = request.form['des']
+#  oid = request.form['oid']
+  print uid
+  print oid
+  time = datetime.now()
+  time = now.replace(microsecond=0)
+#  cursor = g.conn.execute( 'INSERT INTO question (que_id, que_title, que_description) VALUES (96,%s,%s)',(title,des))
+#  print cursor.lastrowid
+#  qid = cursor.lastrowid
+#  g.conn.execute( 'INSERT INTO ask (user_id, que_id, open_cid, time) VALUES (uid,qid,oid,%s)',(time))
+
+  return redirect('/')
+
+
+@app.route('/get_course/<cid>/<csession>/<cyear>/<cseason>/<uid>')
+def get_course(cid,csession,cyear,cseason,uid):
+  if session['s'] != uid:
+    return redirect('/home_s')
   print cid,csession
   cursor = g.conn.execute(
-  """select c.course_id,c.session,c.course_name,o.year,o.season,u.user_name,c.credit,o.time,o.location,c.syllabus \
+  """select c.course_id,c.session,c.course_name,o.year,o.season,u.user_name,c.credit,o.time,o.location,c.syllabus, o.open_cid
   from course c, open o,  instruct i,users u \
   where u.user_id=i.user_id and i.open_cid = o.open_cid 
   and o.course_id = %s and o.session = %s and c.course_id = o.course_id and o.session = c.session and o.year = %s and o.season = %s"""
   , cid,csession,cyear,cseason)
   Courses = [dict(id=row[0], session=row[1], name=row[2], year=row[3], season=row[4], inst=row[5], 
-  credit=row[6], time=row[7], location=row[8], syllabus=row[9]) for row in cursor.fetchall()]
+  credit=row[6], time=row[7], location=row[8], syllabus=row[9], oid=row[10]) for row in cursor.fetchall()]
   cursor.close()
 #  print Courses
 
@@ -222,7 +245,32 @@ def get_course(cid,csession,cyear,cseason):
 #  print Anns
   cursor.close()
 
-  return render_template("course.html",Courses=Courses,Assigns = Assigns,Anns=Anns)
+
+  cursor = g.conn.execute(
+  """select q.que_title, q.que_description, u.user_name, a.time, q.que_id
+  from question q, ask a, users u, open o, course c
+  where u.user_id = a.user_id and q.que_id = a.que_id and a.open_cid = o.open_cid and o.course_id = %s and 
+  o.session = %s and c.course_id = o.course_id and o.session = c.session and o.year = %s and o.season = %s
+  """
+  ,cid , csession,cyear,cseason)
+  Ques = [dict(title=row[0], des=row[1], name=row[2], time=row[3], id=row[4]) for row in cursor.fetchall()]
+#  print Ques
+  cursor.close()
+
+
+  cursor = g.conn.execute(
+  """select r.ans_content, u2.user_name, r.time, q.que_id
+  from question q, reply r, users u1, users u2, ask a, course c, open o
+  where u1.user_id = a.user_id and q.que_id = a.que_id and r.que_id = q.que_id and r.user_id = u2.user_id and o.course_id = %s and 
+  o.session = %s and c.course_id = o.course_id and o.session = c.session and o.year = %s and o.season = %s
+  """
+  ,cid , csession,cyear,cseason)
+  Ans = [dict(content=row[0], name=row[1], time=row[2], id=row[3]) for row in cursor.fetchall()]
+#  print Ans
+  cursor.close()
+
+
+  return render_template("course.html",Courses=Courses,Assigns = Assigns,Anns=Anns,Ques=Ques,Ans=Ans,uid=uid)
 
 @app.route('/another')
 def another():
@@ -296,7 +344,7 @@ def home_s():
   if 's' in session:
     print session['s']
     cursor = g.conn.execute(
-    """select c.course_id,c.session,c.course_name,o.year,o.season,u.user_name 
+    """select c.course_id,c.session,c.course_name,o.year,o.season,u.user_name
     from course c, open o, take t, instruct i,users u 
     where u.user_id=i.user_id and i.open_cid = o.open_cid and t.user_id = %s and t.open_cid = o.open_cid 
     and o.course_id = c.course_id and o.session = c.session"""
@@ -313,7 +361,7 @@ def home_s():
     Userinfo = [dict(id=row[0], name=row[1], gender=row[2], dep=row[3], enroll=row[4], email=row[5], phone=row[6]) for row in cursor.fetchall()]
     cursor.close()
 
-    print Courses
+#    print Courses
 
     cursor = g.conn.execute(
     """select q.que_title, q.que_description, u.user_name, a.time, q.que_id
@@ -322,7 +370,7 @@ def home_s():
     """
     ,session['s'])
     Ques = [dict(title=row[0], des=row[1], name=row[2], time=row[3], id=row[4]) for row in cursor.fetchall()]
-    print Ques
+#    print Ques
     cursor.close()
 
 
@@ -333,21 +381,21 @@ def home_s():
     """
     ,session['s'])
     Ans = [dict(content=row[0], name=row[1], time=row[2], id=row[3]) for row in cursor.fetchall()]
-    print Ans
+ #   print Ans
     cursor.close()
 
 
     cursor = g.conn.execute(
-    """select distinct a.assign_title, a.due_date, c.course_id, c.session, c.course_name, o.open_cid
+    """select distinct a.assign_title, a.due_date, c.course_id, c.session, c.course_name, o.open_cid, p.time, a.assign_description, a.assign_file, a.points
     from users u, assignment a, open o, postassignment p, take t, course c, semester s
     where t.user_id = %s and t.open_cid = o.open_cid and o.course_id = c.course_id and o.session = c.session
-    and o.open_cid = p.open_cid and p.assign_id = a.assign_id and a.due_date > CURRENT_TIMESTAMP - INTERVAL '37 days' 
+    and o.open_cid = p.open_cid and p.assign_id = a.assign_id and a.due_date > CURRENT_TIMESTAMP - INTERVAL '35 days'
     and s.year = o.year and s.season = o.season
     """
     ,session['s'])
 #and a.due_date > CURRENT_TIMESTAMP - INTERVAL '35 days'
-    Assigns = [dict(title=row[0], due=row[1], id=row[2], session=row[3], name=row[4], oid=row[5]) for row in cursor.fetchall()]
-    print Assigns
+    Assigns = [dict(title=row[0], due=row[1], id=row[2], session=row[3], name=row[4], oid=row[5],time=row[6],des=row[7],file=row[8],points=row[9]) for row in cursor.fetchall()]
+#    print Assigns
     cursor.close()
 
 
@@ -416,7 +464,16 @@ def login():
     this_is_never_executed()
 
 
-
+@app.teardown_request
+def teardown_request(exception):
+  """
+  At the end of the web request, this makes sure to close the database connection.
+  If you don't the database could run out of memory!
+  """
+  try:
+    g.conn.close()
+  except Exception as e:
+    pass
 
 
 

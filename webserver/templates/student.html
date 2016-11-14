@@ -43,7 +43,7 @@
 		{% for c in Courses %}
 			<div class="panel panel-default" style="width:30%;float: left; margin-left: 10%;margin-top: 5%">
 				<div class="panel-body">
-				    <a class="course_name" href="{{ url_for('get_course',cid =c.id,csession=c.session,cyear=c.year,cseason=c.season)}}">{{c.id}} (Section: {{c.session}})</a>
+				    <a class="course_name" href="{{ url_for('get_course',cid =c.id,csession=c.session,cyear=c.year,cseason=c.season,uid=Userinfo[0].id)}}">{{c.id}} (Section: {{c.session}})</a>
 				</div>
   				<div class="panel-footer">
   					<div>{{c.name}}</div>
@@ -80,7 +80,7 @@
   				</div>
 			{% endif %}
 			{% endfor %}
-			</ul>	
+			</div>	
 		</div>
                 {% endfor %}
 	</div>
