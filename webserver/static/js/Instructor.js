@@ -5,29 +5,40 @@ $(document).ready(function(){
 		window.location.href = "/logout_i";
 	});
 
-	$("#qa_answer").click(function(){
-		$.post("/ans",
-		{
-		    uid:$("#qa_answer").attr("uid"),
-		    qid:$("#qa_answer").attr("qid"),
-		    title:$("#title").val(),
-		    des:$("#des").val()
-		},
-		function(data){
-		    $("#showText").text(data);
-			$("#modalShow").modal();
-		});
-	});
-
-	$("form#file_form").submit(function() {
+	$("#file_form").submit(function() {
 		var formData = new FormData($(this)[0]);
 
-	    $.post("/upload", formData, function(data) {
-		    $("#showText").text("Answer Successfully!");
+	    $.post($("#file_form").attr("action"), formData, function(data) {
+		    $("#showText").text(data);
 			$("#modalShow").modal();
 	    });
-	 $("#showText").text("Answer Successfully!");
-	$("#modalShow").modal();
+	});
+
+	$("#assfile_form").submit(function() {
+		var formData = new FormData($(this)[0]);
+
+	    $.post($("#assfile_form").attr("action"), formData, function(data) {
+		    $("#showText").text(data);
+			$("#modalShow").modal();
+	    });
+	});
+
+	$("#ann_form").submit(function() {
+		var formData = new FormData($(this)[0]);
+
+	    $.post($("#ann_form").attr("action"), formData, function(data) {
+		    $("#showText").text(data);
+			$("#modalShow").modal();
+	    });
+	});
+
+	$("#qa_form").submit(function() {
+		var formData = new FormData($(this)[0]);
+
+	    $.post($("#qa_form").attr("action"), formData, function(data) {
+		    $("#showText").text(data);
+			$("#modalShow").modal();
+	    });
 	});
 
 
