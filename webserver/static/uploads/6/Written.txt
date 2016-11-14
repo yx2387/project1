@@ -1,0 +1,35 @@
+Ex. 1.4
+Operating systems should include application programs because the fundamental goal of computer systems is to  execute user programs and to make solving user problems easier. By including application programs like web browsers will definitely help the users to solve their problems. 
+Operating systems should not include application programs because a more common definition of operating system is the one program running at all times, and application programs definitely don't run the whole time.
+
+Ex. 1.14
+Since a timesharing system allows multiple users to share the computer simultaneously, it makes sense if there's more than one user. Also, to best utilize the CPU, the tasks should be huge enough that the CPU always has a job to execute, while it's executing multiple tasks at the same time.
+
+Ex. 1.19
+Interrupts are used to signal the occurance of an event from either the hardware or the software. Hardware can trigger an interrupt at any time by sending a signal to the system bus, and software may trigger an interrupt by executing a system call. A trap, however, is a software-generated interrupt caused by an error or a user program. So a trap is a type of the interrupts. Traps can be generated intentionally by a user program, that can be used to request system calls.
+
+Ex. 1.27
+Mobile operating systems often include middlewares, so to develop a operating system on mobile devices one will need to develop its middlewares as well.
+Mobile devices have limited screen size and memory capacity.
+Mobile devices use processors that are smaller and slower, because of their power consumption issue.
+
+Ex. 2.9
+Program execution: It enables the system to execute application programs. And a user-level program should not be able to provide this service.
+I/O operation: For efficiency and protection, the systems handle I/O devices for the user.
+File-system manipulation: It helps the user to manage the permissions of accessing the files. And a user-level program should only be able to access the files that it has permission to.
+Communication:  It helps the user to pass messages between processses.
+Error detection: It helps the user to prevent errors from causing the malfunctioning of the system.
+
+Ex. 2.18
+The message-passing model: 
+	Strength: Useful for exchanging smaller amounts of data, because no conflicts need to be avoided. Easier to implement.
+	Weakness: May not be as fast as shared-memory model.
+The shared-memory model:
+	Strength: Allows maximum speed and convenience of communication, since it can be done at memory transfer speeds when it takes place.
+	Weakness: There are problems regarding protection and synchronization.
+
+Ex. 2.21
+The main advantage of the microkernel approach is that it's easier to extend the operating system. The user programs and system services interact through message passing. The main disadvantage of the microkernel appraoch is the performance problem. Its performance can suffer due to increased system-function overhead.
+
+Ex. 2.24
+Google designed a separate Android API for Java development. There's also Dalvik virtual machine which was designed for Android and is optimized for mobile devices with limited ememory and CPU processing capabilities.

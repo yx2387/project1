@@ -20,7 +20,8 @@ from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import escape, flash, Flask, request, render_template, g, redirect, Response, session
 from werkzeug.utils import secure_filename
-from datetime import datetime
+from datetime import datetime, timedelta
+from dateutil import parser
 
 UPLOAD_FOLDER = 'uploads/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -191,29 +192,22 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    # Get the name of the uploaded file
-    print 1
+#    print 1
     file = request.files['file']
-    print 2
+#    print 2
     oid = request.form['course']
-    print oid
+#    print oid
     dir = UPLOAD_FOLDER + oid +'/'
     dir2 = os.path.join('static/',dir)
 
     if not os.path.exists(dir2):
         os.makedirs(dir2)
 
-    # Check if the file is one of the allowed types/extensions
     if file and allowed_file(file.filename):
-        # Make the filename safe, remove unsupported chars
         filename = secure_filename(file.filename)
-        # Move the file form the temporal folder to
-        # the upload folder we setup
 #        file.save(os.path.join(app.config['UPLOAD_FOLDER'],oid,'/', filename))
         file.save(os.path.join(dir2, filename))
 #	print url_for(os.path.join(dir, filename))
-        # Redirect the user to the uploaded_file route, which
-        # will basicaly show on the browser the uploaded file
 
 	name = file.filename
 	url = dir + file.filename
@@ -228,7 +222,44 @@ def upload():
         return redirect('/')
 
 
+@app.route('/upload_ass', methods=['POST'])
+def upload_ass():
+    print 1
+    file = request.files['file']
+    print 2
+    oid = request.form['course']
+    title = request.form['title']
+    des = request.form['des']
+    due = request.form['due']
+    points = request.form['points']
+    print 2    
+#    print oid
+    dir = UPLOAD_FOLDER + oid +'/'+'ass/'
+    dir2 = os.path.join('static/',dir)
 
+    if not os.path.exists(dir2):
+        os.makedirs(dir2)
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+#        file.save(os.path.join(app.config['UPLOAD_FOLDER'],oid,'/', filename))
+        file.save(os.path.join(dir2, filename))
+#       print url_for(os.path.join(dir, filename))
+
+        name = file.filename
+        url = dir + file.filename
+#        time = datetime.now()
+#        time = time.replace(microsecond=0)
+
+	time = parser.parse(due)
+	time = time - timedelta(days=15)
+
+        cursor = g.conn.execute( 'INSERT INTO assignment (assign_id,assign_title,assign_description,assign_file,due_date,points) VALUES (default,%s,%s,%s,%s,%s)',(title,des,url,due,points))
+        cursor = g.conn.execute('select lastval()')
+        aid = cursor.fetchone()[0]
+        cursor = g.conn.execute('INSERT INTO postassignment (open_cid, assign_id, time) VALUES (%s,%s,%s)',(oid,aid,time))
+
+        return redirect('/')
 
 
 
@@ -249,10 +280,12 @@ def post_ann(uid):
   print oid
   time = datetime.now()
   time = time.replace(microsecond=0)
-#  cursor = g.conn.execute( 'INSERT INTO question (que_id, que_title, que_description) VALUES (96,%s,%s)',(title,des))
+  cursor = g.conn.execute( 'INSERT INTO announcement (ann_id, ann_title, ann_content) VALUES (default,%s,%s)',(title,des))
 #  print cursor.lastrowid
 #  qid = cursor.lastrowid
-#  g.conn.execute( 'INSERT INTO ask (user_id, que_id, open_cid, time) VALUES (uid,qid,oid,%s)',(time))
+  cursor = g.conn.execute('select lastval()')
+  aid = cursor.fetchone()[0]
+  g.conn.execute( 'INSERT INTO postannouncement (open_cid, ann_id, time) VALUES (%s,%s,%s)',(oid,aid,time))
 
   return redirect('/')
 
@@ -283,7 +316,7 @@ def ask(uid,oid):
   print oid
   time = datetime.now()
   time = time.replace(microsecond=0)
-  cursor = g.conn.execute( 'INSERT INTO question (que_id, que_title, que_description) VALUES (0,%s,%s)',(title,des))
+  cursor = g.conn.execute( 'INSERT INTO question (que_id, que_title, que_description) VALUES (default,%s,%s)',(title,des))
   cursor = g.conn.execute('select lastval()')
   qid = cursor.fetchone()[0]
   g.conn.execute( 'INSERT INTO ask (user_id, que_id, open_cid, time) VALUES (%s,%s,%s,%s)',(uid,qid,oid,time))
@@ -437,7 +470,7 @@ def home_i():
 #    print Anns
     cursor.close()
 
-    return render_template("instructor.html",Courses=Courses,Userinfo=Userinfo, Ques = Ques,Ans=Ans, Assigns = Assigns,File=File)
+    return render_template("instructor.html",Courses=Courses,Userinfo=Userinfo, Ques = Ques,Ans=Ans, Assigns = Assigns,File=File, Anns=Anns)
   else:
     return redirect('/')
 
