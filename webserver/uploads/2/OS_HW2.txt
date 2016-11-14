@@ -1,0 +1,15 @@
+每次notify函数记录data_size, from_proc, to_proc, 通过rec函数记录信息在全局, 最后通过stats参数print出来
+每次有与某一进程的communication时的在都在binder_peer中增加一条记录
+在disable之前print所有记录, disable之后自动清楚记录
+binder_peer 通过lists存储
+notify函数只提供pid, 需要找到方法通过pid 找到process name
+需要找到方法找到uid
+
+流程:
+首先如果binder_info start的话 call rec函数, 在链表中寻找pid, 如果没有添加一个
+如果binder_info stop的话 把链表free掉
+如果binder_info print的话 call stats函数, 在链表中寻找pid, 找到后返回所有相关项
+
+分工:
+TY, ZX: 写code
+YX: Implement System Call

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env pytho1.7
 
 """
 Columbia W4111 Intro to databases
@@ -22,14 +22,14 @@ from flask import escape, flash, Flask, request, render_template, g, redirect, R
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
-UPLOAD_FOLDER = '/path/to/the/uploads'
+UPLOAD_FOLDER = 'uploads/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 app.secret_key = 'some_secret'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
+app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
 #
 # The following uses the postgresql test.db -- you can use this for debugging purposes
 # However for the project you will need to connect to your Part 2 database in order to use the
@@ -189,6 +189,89 @@ def index():
 # the functions for each app.route needs to have different names
 #
 
+@app.route('/upload', methods=['POST'])
+def upload():
+    # Get the name of the uploaded file
+    print 1
+    file = request.files['file']
+    print 2
+    oid = request.form['course']
+    print oid
+    dir = UPLOAD_FOLDER + oid +'/'
+
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
+    # Check if the file is one of the allowed types/extensions
+    if file and allowed_file(file.filename):
+        # Make the filename safe, remove unsupported chars
+        filename = secure_filename(file.filename)
+        # Move the file form the temporal folder to
+        # the upload folder we setup
+#        file.save(os.path.join(app.config['UPLOAD_FOLDER'],oid,'/', filename))
+        file.save(os.path.join(dir, filename))
+#	print url_for(os.path.join(dir, filename))
+        # Redirect the user to the uploaded_file route, which
+        # will basicaly show on the browser the uploaded file
+
+	name = file.filename
+	url = dir + file.filename
+	time = datetime.now()
+        time = time.replace(microsecond=0)
+
+	cursor = g.conn.execute( 'INSERT INTO file (file_id, file_name, file_content) VALUES (98,%s,%s)',(name,url))
+
+	cursor = g.conn.execute('INSERT INTO upload (open_cid, file_id, time) VALUES (%s,98,%s)',(oid,time))
+
+        return redirect('/')
+
+
+
+
+
+
+
+
+
+
+@app.route('/post_ann/<uid>', methods=['POST'])
+def post_ann(uid):
+  print uid
+#  uid = request.form['uid']
+  title = request.form['title']
+  des = request.form['des']
+#  des = request.form['des']
+  oid = request.form['course']
+  print title
+  print des
+  print oid
+  time = datetime.now()
+  time = time.replace(microsecond=0)
+#  cursor = g.conn.execute( 'INSERT INTO question (que_id, que_title, que_description) VALUES (96,%s,%s)',(title,des))
+#  print cursor.lastrowid
+#  qid = cursor.lastrowid
+#  g.conn.execute( 'INSERT INTO ask (user_id, que_id, open_cid, time) VALUES (uid,qid,oid,%s)',(time))
+
+  return redirect('/')
+
+
+@app.route('/ans/<uid>/<qid>', methods=['POST'])
+def ans(uid,qid):
+#  uid = request.form['uid']
+  content = request.form['content']
+#  des = request.form['des']
+#  oid = request.form['oid']
+  print uid
+  print qid
+  print content
+  time = datetime.now()
+  time = time.replace(microsecond=0)
+#  cursor = g.conn.execute( 'INSERT INTO question (que_id, que_title, que_description) VALUES (96,%s,%s)',(title,des))
+#  print cursor.lastrowid
+#  qid = cursor.lastrowid
+#  g.conn.execute( 'INSERT INTO ask (user_id, que_id, open_cid, time) VALUES (uid,qid,oid,%s)',(time))
+
+  return redirect('/')
 
 
 @app.route('/ask/<uid>/<oid>', methods=['POST'])
@@ -200,7 +283,7 @@ def ask(uid,oid):
   print uid
   print oid
   time = datetime.now()
-  time = now.replace(microsecond=0)
+  time = time.replace(microsecond=0)
 #  cursor = g.conn.execute( 'INSERT INTO question (que_id, que_title, que_description) VALUES (96,%s,%s)',(title,des))
 #  print cursor.lastrowid
 #  qid = cursor.lastrowid
@@ -298,15 +381,16 @@ def home_i():
     Userinfo = [dict(id=row[0], name=row[1], gender=row[2], dep=row[3], title=row[4], email=row[5], phone=row[6]) for row in cursor.fetchall()]
     cursor.close()
 
-    print Userinfo
+#    print Userinfo
 #    print Courses
 
     cursor = g.conn.execute(
-    """select q.que_title, q.que_description, u.user_name, a.time, q.que_id
-    from question q, ask a, users u
-    where u.user_id = a.user_id and q.que_id = a.que_id
+    """select q.que_title, q.que_description, u1.user_name, a.time, q.que_id
+    from question q, ask a, users u1, users u2, instruct i, open o
+    where u1.user_id = a.user_id and q.que_id = a.que_id and u2.user_id = %s and u2.user_id = i.user_id and i.open_cid = o.open_cid
+    and a.open_cid = o.open_cid 
     """
-    )
+    , session['i'])
     Ques = [dict(title=row[0], des=row[1], name=row[2], time=row[3], id=row[4]) for row in cursor.fetchall()]
 #    print Ques
     cursor.close()
@@ -314,10 +398,11 @@ def home_i():
 
     cursor = g.conn.execute(
     """select r.ans_content, u2.user_name, r.time, q.que_id
-    from question q, reply r, users u1, users u2, ask a
+    from question q, reply r, users u1, users u2, ask a, users u3, instruct i, open o
     where u1.user_id = a.user_id and q.que_id = a.que_id and r.que_id = q.que_id and r.user_id = u2.user_id
+    and u3.user_id = %s and u3.user_id = i.user_id and i.open_cid = o.open_cid and a.open_cid = o.open_cid
     """
-    )
+    , session['i'])
     Ans = [dict(content=row[0], name=row[1], time=row[2], id=row[3]) for row in cursor.fetchall()]
 #    print Ans
     cursor.close()
@@ -330,11 +415,30 @@ def home_i():
     and p.assign_id = a.assign_id and i.open_cid = o.open_cid and s.year = o.year and s.season = o.season"""
     ,session['i']) 
     Assigns = [dict(id=row[0], title=row[1], des=row[2], points=row[3], due=row[4], time=row[5], cid=row[6], cname=row[7],oid=row[8]) for row in cursor.fetchall()]
-    print Assigns
+#    print Assigns
     cursor.close()
 
+    cursor = g.conn.execute(
+    """select a.ann_title, a.ann_content, p.time, c.course_id, c.course_name, o.open_cid
+    from postannouncement p, announcement a, open o, course c, instruct i, semester s
+    where i.user_id = %s and c.course_id = o.course_id and o.session = c.session and p.open_cid = o.open_cid
+    and p.ann_id = a.ann_id and i.open_cid = o.open_cid and s.year = o.year and s.season = o.season"""
+    ,session['i'])
+    Anns = [dict(title=row[0], content=row[1], time=row[2], cid=row[3], cname=row[4],oid=row[5]) for row in cursor.fetchall()]
+#    print Anns
+    cursor.close()
 
-    return render_template("instructor.html",Courses=Courses,Userinfo=Userinfo, Ques = Ques,Ans=Ans, Assigns = Assigns)
+    cursor = g.conn.execute(
+    """select f.file_name, f.file_content, p.time, c.course_id, c.course_name, o.open_cid
+    from upload p, file f, open o, course c, instruct i, semester s
+    where i.user_id = %s and c.course_id = o.course_id and o.session = c.session and p.open_cid = o.open_cid
+    and p.file_id = f.file_id and i.open_cid = o.open_cid and s.year = o.year and s.season = o.season"""
+    ,session['i'])
+    File = [dict(name=row[0], content=row[1], time=row[2], cid=row[3], cname=row[4],oid=row[5]) for row in cursor.fetchall()]
+#    print Anns
+    cursor.close()
+
+    return render_template("instructor.html",Courses=Courses,Userinfo=Userinfo, Ques = Ques,Ans=Ans, Assigns = Assigns,File=File)
   else:
     return redirect('/')
 

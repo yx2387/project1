@@ -46,7 +46,7 @@
 		{% for c in Courses %}
 			<div class="panel panel-default" style="width:30%;float: left; margin-left: 10%;margin-top: 5%">
 				<div class="panel-body">
-				    <a class="course_name" href="{{ url_for('get_course',cid =c.id,csession=c.session,cyear=c.year,cseason=c.season)}}">{{c.id}} (Section: {{c.session}})</a>
+				    <a class="course_name" >{{c.id}} (Section: {{c.session}})</a>
 				</div>
   				<div class="panel-footer">
   					<div>{{c.name}}</div>
@@ -63,37 +63,34 @@
 			<div class="form-group">
 			    <label>Course:</label>
 			    <select type="text" class="form-control" name="course">
-			    	<option>COMSW 4111</option>
-			    	<option>COMSW 4771</option>
+                		{% for c in Courses %}
+			    	<option value="{{c.oid}}"> {{c.id}} {{c.name}} {{c.session}} {{c.year}} {{c.season}}</option>
+             			{% endfor %}
 			    </select>
 			</div>
 			<div class="form-group">
 				<label>File input</label>
-			    <input type="file" id="exampleInputFile">
+			    <input type="file" name="file">
 			</div>
 			<button type="submit" class="btn btn-primary">Post</button>
 		</form>
 		<h2>Previous files</h2>
+                {% for c in Courses %}
 		<div>
-			<h4>COMSW 4111 Introduction to Databases</h4>
+			<h4>{{c.id}} {{c.name}} {{c.session}} {{c.year}} {{c.season}}</h4>
 			<ul class="list-group">
+			{% for f in File %}
+			{% if f.oid == c.oid %}
 	  			<li class="list-group-item">
 	  				<a>
-	  					lec17
+	  					{{f.name}}
 	  				</a>
 	  			</li>
-	  			<li class="list-group-item">
-	  				<a>
-	  					lec16
-	  				</a>
-	  			</li>
-	  			<li class="list-group-item">
-	  				<a>
-	  					lec15
-	  				</a>
-	  			</li>
+			{% endif %}
+			{% endfor %}
 			</ul>
 		</div>
+                {% endfor %}
 	</div>
 
 	<div id="assignment_panel" style="width:40%;margin-left: 30%;margin-bottom: 10%">
@@ -101,9 +98,10 @@
 			<form>
 			  <div class="form-group">
 			    <label>Course:</label>
-			    <select type="text" class="form-control">
-			    	<option>COMSW 4111</option>
-			    	<option>COMSW 4771</option>
+			    <select type="text" class="form-control" name=course>
+                                {% for c in Courses %}
+                                <option value="{{c.oid}}"> {{c.id}} {{c.name}} {{c.session}} {{c.year}} {{c.season}}</option>
+                                {% endfor %}
 			    </select>
 			  </div>
 			  <div class="form-group">
@@ -165,81 +163,51 @@
 	</div>
 
 	<div id="announcement_panel" style="width:40%;margin-left: 30%;margin-bottom: 10%">
-		<form>
+		<form method="POST" action="{{ url_for('post_ann',uid = Userinfo[0].id )}}">
 			<div class="form-group">
 			    <label>Course:</label>
-			    <select type="text" class="form-control">
-			    	<option>COMSW 4111</option>
-			    	<option>COMSW 4771</option>
+			    <select type="text" class="form-control" name=course>
+                                {% for c in Courses %}
+                                <option value="{{c.oid}}"> {{c.id}} {{c.name}} {{c.session}} {{c.year}} {{c.season}}</option>
+                                {% endfor %}
 			    </select>
 			</div>
 			<div class="form-group">
 			   <label>Announcement title:</label>
-			   <input type="text" class="form-control">
+			   <input type="text" name=title class="form-control">
 			</div>
 			<div class="form-group">
 			   <label>Announcement description:</label>
-			   <textarea class="form-control" rows="3"></textarea>
+			   <textarea class="form-control" name=des rows="3"></textarea>
 			</div>
 			<button type="submit" class="btn btn-primary">Post</button>
 		</form>
 		<div>
 			<h2>Previous announcements</h2>
-			<div style="margin-top: 2%">
-				<h4 style="margin-bottom: 2%">COMSW 4111  Introduction to Databases</h4>
-				<div class="panel-group">
-		  			<div class="panel panel-default">
-		    			<div class="panel-heading" role="tab">
-		      				<h4 class="panel-title">
-		      					HW5 Deadline
-		      					<span class="badge" style="float:right">2016/11/20</span>
-		      				</h4>
-		    			</div>
-		      			<div class="panel-body">
-		        				Deadline is extented to 11.23!!
-		      			</div>
-		  			</div>
-		  			<div class="panel panel-default">
-		    			<div class="panel-heading" role="tab">
-		      				<h4 class="panel-title">
-		        				Admistrivia issues
-		        				<span class="badge" style="float:right">2016/11/20</span>
-		      				</h4>
-		    			</div>
-		        		<div class="panel-body">
-			        		HW3 is released!!
-		      			</div>
-		      		</div>
-    			</div>
-			</div>
 
+			{% for c in Courses %}
 			<div style="margin-top: 2%">
-				<h4 style="margin-bottom: 2%">COMSW 4771 Machine Learning</h4>
+				<h4 style="margin-bottom: 2%">{{c.id}}  {{c.name}} {{c.session}} {{c.year}} {{c.season}}</h4>
 				<div class="panel-group">
+                                {% for a in Anns %}
+                                {% if c.oid == a.oid %}
 		  			<div class="panel panel-default">
 		    			<div class="panel-heading" role="tab">
 		      				<h4 class="panel-title">
-		      					HW5 Deadline
-		      					<span class="badge" style="float:right">2016/11/20</span>
+		      					{{a.title}}
+		      					<span class="badge" style="float:right">{{a.time}}</span>
 		      				</h4>
 		    			</div>
 		      			<div class="panel-body">
-		        				Deadline is extented to 11.23!!
+		        				{{a.content}}
 		      			</div>
 		  			</div>
-		  			<div class="panel panel-default">
-		    			<div class="panel-heading" role="tab">
-		      				<h4 class="panel-title">
-		        				Admistrivia issues
-		        				<span class="badge" style="float:right">2016/11/20</span>
-		      				</h4>
-		    			</div>
-		        		<div class="panel-body">
-			        		HW3 is released!!
-		      			</div>
-		      		</div>
+                                {% endif %}
+                                {% endfor %}
     			</div>
 			</div>
+			{% endfor %}
+
 		</div>
 	</div>
 
@@ -260,20 +228,25 @@
 		      				<small>{{q.name}}</small>
 		    			</div>
 		      			<div class="panel-body">
+					{% for a in Ans %}
+					{% if q.id == a.id %}
 		      				<div style="border-bottom: 1px solid #ddd;">
 		      					<div>
-		      						Answer 1
+		      						{{a.content}}
 		      					</div>
 		      					<div>
-		      						<small>Answered by: Eugene Wu at 2016-11-08</small>
+		      						<small>Answered by: {{a.name}}  at {{a.time}}</small>
 		      					</div>
 		      				</div>
+					{% endif %}
+					{% endfor %}
 		      			</div>
+
 		  			</div>
-		  			<div style="width:40%;display: inline-block;margin-left: 5%">
-				   		<textarea class="form-control" rows="5"></textarea>
-				   		<button class="btn btn-primary" style="margin-top: 3%">Answer</button>
-					</div>
+					<form method="POST" action="{{ url_for('ans',uid = Userinfo[0].id,qid=q.id )}}" style="width:40%;display: inline-block;margin-left: 5%">
+				   		<textarea name=content class="form-control" rows="5"></textarea>
+				   		<button type="submit" class="btn btn-primary" style="margin-top: 3%">Answer</button>
+					</form>
 				</div>
 
 
