@@ -198,9 +198,10 @@ def upload():
     oid = request.form['course']
     print oid
     dir = UPLOAD_FOLDER + oid +'/'
+    dir2 = os.path.join('static/',dir)
 
-    if not os.path.exists(dir):
-        os.makedirs(dir)
+    if not os.path.exists(dir2):
+        os.makedirs(dir2)
 
     # Check if the file is one of the allowed types/extensions
     if file and allowed_file(file.filename):
@@ -209,7 +210,7 @@ def upload():
         # Move the file form the temporal folder to
         # the upload folder we setup
 #        file.save(os.path.join(app.config['UPLOAD_FOLDER'],oid,'/', filename))
-        file.save(os.path.join(dir, filename))
+        file.save(os.path.join(dir2, filename))
 #	print url_for(os.path.join(dir, filename))
         # Redirect the user to the uploaded_file route, which
         # will basicaly show on the browser the uploaded file
@@ -219,9 +220,10 @@ def upload():
 	time = datetime.now()
         time = time.replace(microsecond=0)
 
-	cursor = g.conn.execute( 'INSERT INTO file (file_id, file_name, file_content) VALUES (98,%s,%s)',(name,url))
-
-	cursor = g.conn.execute('INSERT INTO upload (open_cid, file_id, time) VALUES (%s,98,%s)',(oid,time))
+	cursor = g.conn.execute( 'INSERT INTO file (file_id, file_name, file_content) VALUES (default,%s,%s)',(name,url))
+	cursor = g.conn.execute('select lastval()')
+	id = cursor.fetchone()[0]
+	cursor = g.conn.execute('INSERT INTO upload (open_cid, file_id, time) VALUES (%s,%s,%s)',(oid,id,time))
 
         return redirect('/')
 
@@ -266,10 +268,7 @@ def ans(uid,qid):
   print content
   time = datetime.now()
   time = time.replace(microsecond=0)
-#  cursor = g.conn.execute( 'INSERT INTO question (que_id, que_title, que_description) VALUES (96,%s,%s)',(title,des))
-#  print cursor.lastrowid
-#  qid = cursor.lastrowid
-#  g.conn.execute( 'INSERT INTO ask (user_id, que_id, open_cid, time) VALUES (uid,qid,oid,%s)',(time))
+  g.conn.execute( 'INSERT INTO reply (user_id, que_id, time,ans_content) VALUES (%s,%s,%s,%s)',(uid,qid,time,content))
 
   return redirect('/')
 
@@ -284,10 +283,10 @@ def ask(uid,oid):
   print oid
   time = datetime.now()
   time = time.replace(microsecond=0)
-#  cursor = g.conn.execute( 'INSERT INTO question (que_id, que_title, que_description) VALUES (96,%s,%s)',(title,des))
-#  print cursor.lastrowid
-#  qid = cursor.lastrowid
-#  g.conn.execute( 'INSERT INTO ask (user_id, que_id, open_cid, time) VALUES (uid,qid,oid,%s)',(time))
+  cursor = g.conn.execute( 'INSERT INTO question (que_id, que_title, que_description) VALUES (0,%s,%s)',(title,des))
+  cursor = g.conn.execute('select lastval()')
+  qid = cursor.fetchone()[0]
+  g.conn.execute( 'INSERT INTO ask (user_id, que_id, open_cid, time) VALUES (%s,%s,%s,%s)',(uid,qid,oid,time))
 
   return redirect('/')
 
@@ -429,12 +428,12 @@ def home_i():
     cursor.close()
 
     cursor = g.conn.execute(
-    """select f.file_name, f.file_content, p.time, c.course_id, c.course_name, o.open_cid
+    """select distinct f.file_name, f.file_content, c.course_id, c.course_name, o.open_cid
     from upload p, file f, open o, course c, instruct i, semester s
     where i.user_id = %s and c.course_id = o.course_id and o.session = c.session and p.open_cid = o.open_cid
-    and p.file_id = f.file_id and i.open_cid = o.open_cid and s.year = o.year and s.season = o.season"""
+    and p.file_id = f.file_id and i.open_cid = o.open_cid and s.year = o.year and s.season = o.season """
     ,session['i'])
-    File = [dict(name=row[0], content=row[1], time=row[2], cid=row[3], cname=row[4],oid=row[5]) for row in cursor.fetchall()]
+    File = [dict(name=row[0], content=row[1], cid=row[2], cname=row[3],oid=row[4]) for row in cursor.fetchall()]
 #    print Anns
     cursor.close()
 

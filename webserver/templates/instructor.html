@@ -82,8 +82,8 @@
 			{% for f in File %}
 			{% if f.oid == c.oid %}
 	  			<li class="list-group-item">
-	  				<a>
-	  					{{f.name}}
+	  				<a href="{{ url_for('static', filename=f.content) }}">
+						{{f.name}}
 	  				</a>
 	  			</li>
 			{% endif %}
