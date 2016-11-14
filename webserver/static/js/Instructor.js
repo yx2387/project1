@@ -8,7 +8,7 @@ $(document).ready(function(){
 	$("#file_form").submit(function() {
 		var formData = new FormData($(this)[0]);
 
-	    $.post($("#file_form").attr("action"), formData, function(data) {
+	    $.post("upload", formData, function(data) {
 		    $("#showText").text(data);
 			$("#modalShow").modal();
 	    });
