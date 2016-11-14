@@ -42,266 +42,262 @@
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
-	        <li id="course_nav" class="active"><a href="#">Courses <span class="sr-only">(current)</span></a></li>
-	        <li id="file_nav"><a href="#">Files</a></li>
-	        <li id="assignment_nav"><a href="#">Assignments</a></li>
-	        <li id="announcement_nav"><a href="#">Announcements</a></li>
-	        <li id="qa_nav"><a href="#">Q & A</a></li>
+	        <li id="course_nav" class="active"><a href="#course_panel" data-toggle="tab">Courses <span class="sr-only">(current)</span></a></li>
+	        <li id="file_nav"><a href="#file_panel" data-toggle="tab">Files</a></li>
+	        <li id="assignment_nav"><a href="#assignment_panel" data-toggle="tab">Assignments</a></li>
+	        <li id="announcement_nav"><a href="#announcement_panel" data-toggle="tab">Announcements</a></li>
+	        <li id="qa_nav"><a href="#qa_panel" data-toggle="tab">Q & A</a></li>
+	       	<li id="account_nav"><a href="#account_panel" data-toggle="tab">Account</a></li>
 	      </ul>
 	      
 	      <ul class="nav navbar-nav navbar-right">
-	        <li id="account_nav"><a href="#">Account</a></li>
 	        <li id="logout"><a>Logout</a></li>
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
 
-	<div id="course_panel" style="margin-left: 10%; margin-right: 10%;">
-		{% for c in Courses %}
-			<div class="panel panel-default" style="width:30%;float: left; margin-left: 10%;margin-top: 5%">
-				<div class="panel-body">
-				    <a class="course_name" >{{c.id}} (Section: {{c.session}})</a>
+	<div id="myTabContent" class="tab-content">
+		<div id="course_panel"  class="tab-pane fade in active" style="margin-left: 10%; margin-right: 10%;">
+			{% for c in Courses %}
+				<div class="panel panel-default" style="width:30%;float: left; margin-left: 10%;margin-top: 5%">
+					<div class="panel-body">
+					    {{c.id}} (Section: {{c.session}})
+					</div>
+	  				<div class="panel-footer">
+	  					<div>{{c.name}}</div>
+	  					<div>{{c.season}} {{c.year}}</div>
+	  					<div>{{c.inst}}</div>
+	  				</div>
 				</div>
-  				<div class="panel-footer">
-  					<div>{{c.name}}</div>
-  					<div>{{c.season}} {{c.year}}</div>
-  					<div>{{c.inst}}</div>
-  				</div>
-			</div>
-		{% endfor %}
-	</div>
-
-
-	<div id="file_panel" style="width:40%;margin-left: 30%;margin-bottom: 10%">
-		<form id="file_form" action="upload" method="post" enctype="multipart/form-data">
-			<div class="form-group">
-			    <label>Course:</label>
-			    <select type="text" class="form-control" name="course">
-                		{% for c in Courses %}
-			    	<option value="{{c.oid}}"> {{c.id}} {{c.name}} {{c.session}} {{c.year}} {{c.season}}</option>
-             			{% endfor %}
-			    </select>
-			</div>
-			<div class="form-group">
-				<label>File input</label>
-			    <input type="file" name="file">
-			</div>
-			<button type="submit" class="btn btn-primary">Post</button>
-		</form>
-		<h2>Previous files</h2>
-                {% for c in Courses %}
-		<div>
-			<h4>{{c.id}} {{c.name}} {{c.session}} {{c.year}} {{c.season}}</h4>
-			<ul class="list-group">
-			{% for f in File %}
-			{% if f.oid == c.oid %}
-	  			<li class="list-group-item">
-	  				<a href="{{ url_for('static', filename=f.content) }}">
-						{{f.name}}
-	  				</a>
-	  			</li>
-			{% endif %}
 			{% endfor %}
-			</ul>
 		</div>
-                {% endfor %}
-	</div>
-
-	<div id="assignment_panel" style="width:40%;margin-left: 30%;margin-bottom: 10%">
-		<div>
-			<form id="assfile_form" action="upload_ass" method="post" enctype="multipart/form-data">
-			  <div class="form-group">
-			    <label>Course:</label>
-			    <select type="text" class="form-control" name=course>
-                                {% for c in Courses %}
-                                <option value="{{c.oid}}"> {{c.id}} {{c.name}} {{c.session}} {{c.year}} {{c.season}}</option>
-                                {% endfor %}
-			    </select>
-			  </div>
-			  <div class="form-group">
-			    <label>Assignment title:</label>
-			    <input name="title" type="text" class="form-control">
-			  </div>
-			  <div class="form-group">
-			    <label>Assignment description:</label>
-			    <textarea name="des" class="form-control" rows="3"></textarea>
-			  </div>
-			  <div class="form-group">
-			    <label>Due date:</label>
-			    <input name="due" type="text" class="form-control" id="datetimepicker" data-date-format="yyyy-mm-dd hh:ii:ss">
-			  </div>
-			  <div class="form-group">
-			    <label>Points</label>
-			    <input name="points" type="number" class="form-control">
-			  </div>
-			  <div class="form-group">
-			    <label>File input</label>
-			    <input name="file" type="file" id="exampleInputFile">
-			  </div>
-			  <button type="submit" class="btn btn-primary">Post</button>
+		<div id="file_panel" class="tab-pane fade" style="width:40%;margin-left: 30%;margin-bottom: 10%">
+			<form id="file_form">
+				<div class="form-group">
+				    <label>Course:</label>
+				    <select type="text" class="form-control" name="course">
+	                		{% for c in Courses %}
+				    	<option value="{{c.oid}}"> {{c.id}} {{c.name}} {{c.session}} {{c.year}} {{c.season}}</option>
+	             			{% endfor %}
+				    </select>
+				</div>
+				<div class="form-group">
+					<label>File input</label>
+				    <input type="file" name="file">
+				</div>
+				<button type="submit" class="btn btn-primary">Post</button>
 			</form>
-		</div>
-		<h2>Previous assignments</h2>
-
-		{% for c in Courses %}
-		<div style="margin-top: 2%">
-			<h4 style="margin-bottom: 2%">{{c.id}}  {{c.name}} {{c.session}} {{c.year}} {{c.season}}</h4>
-			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-	  			
-				{% for a in Assigns %}
-				{% if c.oid == a.oid %}
-				<div class="panel panel-default">
-	    			<div class="panel-heading" role="tab" id="{{a.id}}">
-	      				<h4 class="panel-title">
-	        				<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{a.id}}" aria-expanded="true" aria-controls="collapseOne">
-	          				{{a.title}}
-	        				</a><span class="badge" style="float:right">Due: {{a.due}}</span>
-	      				</h4>
-	    			</div>
-	    			<div id="collapse{{a.id}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="{{a.id}}">
-	      				<div class="panel-body">
-	        				<div>Description: {{a.des}}</div>
-	        				<div>Points: {{a.points}}</div>
-	        				<div>Post time: {{a.time}}</div>
-	      				</div>
-	    			</div>
-	  			</div>
+			<h2>Previous files</h2>
+	                {% for c in Courses %}
+			<div>
+				<h4>{{c.id}} {{c.name}} {{c.session}} {{c.year}} {{c.season}}</h4>
+				<ul class="list-group">
+				{% for f in File %}
+				{% if f.oid == c.oid %}
+		  			<li class="list-group-item">
+		  				<a href="{{ url_for('static', filename=f.content) }}">
+							{{f.name}}
+		  				</a>
+		  			</li>
 				{% endif %}
 				{% endfor %}
-
-	  		</div>
+				</ul>
+			</div>
+	        {% endfor %}
 		</div>
-		{% endfor %}
 
-
-	</div>
-
-	<div id="announcement_panel" style="width:40%;margin-left: 30%;margin-bottom: 10%">
-		<form method="POST" action="{{ url_for('post_ann',uid = Userinfo[0].id )}}">
-			<div class="form-group">
-			    <label>Course:</label>
-			    <select type="text" class="form-control" name=course>
-                                {% for c in Courses %}
-                                <option value="{{c.oid}}"> {{c.id}} {{c.name}} {{c.session}} {{c.year}} {{c.season}}</option>
-                                {% endfor %}
-			    </select>
+		<div id="assignment_panel" class="tab-pane fade" style="width:40%;margin-left: 30%;margin-bottom: 10%">
+			<div>
+				<form id="assfile_form" action="upload_ass" method="post" enctype="multipart/form-data">
+				  <div class="form-group">
+				    <label>Course:</label>
+				    <select type="text" class="form-control" name=course>
+	                                {% for c in Courses %}
+	                                <option value="{{c.oid}}"> {{c.id}} {{c.name}} {{c.session}} {{c.year}} {{c.season}}</option>
+	                                {% endfor %}
+				    </select>
+				  </div>
+				  <div class="form-group">
+				    <label>Assignment title:</label>
+				    <input name="title" type="text" class="form-control">
+				  </div>
+				  <div class="form-group">
+				    <label>Assignment description:</label>
+				    <textarea name="des" class="form-control" rows="3"></textarea>
+				  </div>
+				  <div class="form-group">
+				    <label>Due date:</label>
+				    <input name="due" type="text" class="form-control" id="datetimepicker" data-date-format="yyyy-mm-dd hh:ii:ss">
+				  </div>
+				  <div class="form-group">
+				    <label>Points</label>
+				    <input name="points" type="number" class="form-control">
+				  </div>
+				  <div class="form-group">
+				    <label>File input</label>
+				    <input name="file" type="file" id="exampleInputFile">
+				  </div>
+				  <button type="submit" class="btn btn-primary">Post</button>
+				</form>
 			</div>
-			<div class="form-group">
-			   <label>Announcement title:</label>
-			   <input type="text" name=title class="form-control">
-			</div>
-			<div class="form-group">
-			   <label>Announcement description:</label>
-			   <textarea class="form-control" name=des rows="3"></textarea>
-			</div>
-			<button type="submit" class="btn btn-primary">Post</button>
-		</form>
-		<div>
-			<h2>Previous announcements</h2>
+			<h2>Previous assignments</h2>
 
 			{% for c in Courses %}
 			<div style="margin-top: 2%">
 				<h4 style="margin-bottom: 2%">{{c.id}}  {{c.name}} {{c.session}} {{c.year}} {{c.season}}</h4>
-				<div class="panel-group">
-                                {% for a in Anns %}
-                                {% if c.oid == a.oid %}
-		  			<div class="panel panel-default">
-		    			<div class="panel-heading" role="tab">
+				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+		  			
+					{% for a in Assigns %}
+					{% if c.oid == a.oid %}
+					<div class="panel panel-default">
+		    			<div class="panel-heading" role="tab" id="{{a.id}}">
 		      				<h4 class="panel-title">
-		      					{{a.title}}
-		      					<span class="badge" style="float:right">{{a.time}}</span>
+		        				<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{a.id}}" aria-expanded="true" aria-controls="collapseOne">
+		          				{{a.title}}
+		        				</a><span class="badge" style="float:right">Due: {{a.due}}</span>
 		      				</h4>
 		    			</div>
-		      			<div class="panel-body">
-		        				{{a.content}}
-		      			</div>
-		  			</div>
-                                {% endif %}
-                                {% endfor %}
-    			</div>
-			</div>
-			{% endfor %}
-
-		</div>
-	</div>
-
-	<div id="qa_panel" style="width:70%;margin-left: 15%;margin-bottom: 10%">
-		<div>
-			<div class="panel-group">
-
-				{% for q in Ques %}
-				<div style="margin-top: 3%;">
-					<div class="panel panel-default" style="width:50%;display: inline-block;vertical-align: top">
-		    			<div class="panel-heading" role="tab">
-		      				<h4 class="list-group-item-heading">
-		      					{{q.title}}
-		      					<span class="badge" style="float:right">{{q.time}}</span>
-		      				</h4>
-		      				<p class="list-group-item-text">{{q.des}}</p>
-		      				<small>Asked by:</small>
-		      				<small>{{q.name}}</small>
-		    			</div>
-		      			<div class="panel-body">
-					{% for a in Ans %}
-					{% if q.id == a.id %}
-		      				<div style="border-bottom: 1px solid #ddd;">
-		      					<div>
-		      						{{a.content}}
-		      					</div>
-		      					<div>
-		      						<small>Answered by: {{a.name}}  at {{a.time}}</small>
-		      					</div>
+		    			<div id="collapse{{a.id}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="{{a.id}}">
+		      				<div class="panel-body">
+		        				<div>Description: {{a.des}}</div>
+		        				<div>Points: {{a.points}}</div>
+		        				<div>Post time: {{a.time}}</div>
 		      				</div>
+		    			</div>
+		  			</div>
 					{% endif %}
 					{% endfor %}
-		      			</div>
 
-		  			</div>
-					<div style="width:40%;display: inline-block;margin-left: 5%">
-				   		<textarea name=content class="form-control" rows="5"></textarea>
-				   		<button id="qa_answer" type="submit" uid="{{Userinfo[0].id}}" qid="{{q.id}}" class="btn btn-primary" style="margin-top: 3%">Answer</button>
-					</div>
+		  		</div>
+			</div>
+			{% endfor %}
+		</div>
+
+		<div id="announcement_panel" class="tab-pane fade" style="width:40%;margin-left: 30%;margin-bottom: 10%">
+			<form method="POST" action="{{ url_for('post_ann',uid = Userinfo[0].id )}}">
+				<div class="form-group">
+				    <label>Course:</label>
+				    <select type="text" class="form-control" name=course>
+	                                {% for c in Courses %}
+	                                <option value="{{c.oid}}"> {{c.id}} {{c.name}} {{c.session}} {{c.year}} {{c.season}}</option>
+	                                {% endfor %}
+				    </select>
+				</div>
+				<div class="form-group">
+				   <label>Announcement title:</label>
+				   <input type="text" name=title class="form-control">
+				</div>
+				<div class="form-group">
+				   <label>Announcement description:</label>
+				   <textarea class="form-control" name=des rows="3"></textarea>
+				</div>
+				<button type="submit" class="btn btn-primary">Post</button>
+			</form>
+			<div>
+				<h2>Previous announcements</h2>
+
+				{% for c in Courses %}
+				<div style="margin-top: 2%">
+					<h4 style="margin-bottom: 2%">{{c.id}}  {{c.name}} {{c.session}} {{c.year}} {{c.season}}</h4>
+					<div class="panel-group">
+	                                {% for a in Anns %}
+	                                {% if c.oid == a.oid %}
+			  			<div class="panel panel-default">
+			    			<div class="panel-heading" role="tab">
+			      				<h4 class="panel-title">
+			      					{{a.title}}
+			      					<span class="badge" style="float:right">{{a.time}}</span>
+			      				</h4>
+			    			</div>
+			      			<div class="panel-body">
+			        				{{a.content}}
+			      			</div>
+			  			</div>
+	                                {% endif %}
+	                                {% endfor %}
+	    			</div>
 				</div>
 				{% endfor %}
-	  		</div>	
-		</div>
-	</div>
 
-	<div id="account_panel" style="margin-left: 30%; margin-right: 30%;">
-		<div class="list-group">
-  			<div class="list-group-item">
-    			<h4 class="list-group-item-heading">UNI</h4>
-    			<p class="list-group-item-text">{{Userinfo[0].id}}</p>
-  			</div>
-  			<div class="list-group-item">
-    			<h4 class="list-group-item-heading">Name</h4>
-    			<p class="list-group-item-text">{{Userinfo[0].name}}</p>
-  			</div>
-  			<div class="list-group-item">
-    			<h4 class="list-group-item-heading">Gender</h4>
-    			<p class="list-group-item-text">{{Userinfo[0].gender}}</p>
-  			</div>
-  			<div class="list-group-item">
-    			<h4 class="list-group-item-heading">Department</h4>
-    			<p class="list-group-item-text">{{Userinfo[0].dep}}</p>
-  			</div>
-  			<div class="list-group-item">
-    			<h4 class="list-group-item-heading">Title</h4>
-    			<p class="list-group-item-text">{{Userinfo[0].title}}</p>
-  			</div>
-  			<div class="list-group-item">
-    			<h4 class="list-group-item-heading">Email</h4>
-    			<p class="list-group-item-text">{{Userinfo[0].email}}</p>
-  			</div>
-  			<div class="list-group-item">
-    			<h4 class="list-group-item-heading">Contact Phone</h4>
-    			<p class="list-group-item-text">{{Userinfo[0].phone}}</p>
-  			</div>
+			</div>
+		</div>
+
+		<div id="qa_panel" class="tab-pane fade" style="width:70%;margin-left: 15%;margin-bottom: 10%">
+			<div>
+				<div class="panel-group">
+
+					{% for q in Ques %}
+					<div style="margin-top: 3%;">
+						<div class="panel panel-default" style="width:50%;display: inline-block;vertical-align: top">
+			    			<div class="panel-heading" role="tab">
+			      				<h4 class="list-group-item-heading">
+			      					{{q.title}}
+			      					<span class="badge" style="float:right">{{q.time}}</span>
+			      				</h4>
+			      				<p class="list-group-item-text">{{q.des}}</p>
+			      				<small>Asked by:</small>
+			      				<small>{{q.name}}</small>
+			    			</div>
+			      			<div class="panel-body">
+						{% for a in Ans %}
+						{% if q.id == a.id %}
+			      				<div style="border-bottom: 1px solid #ddd;">
+			      					<div>
+			      						{{a.content}}
+			      					</div>
+			      					<div>
+			      						<small>Answered by: {{a.name}}  at {{a.time}}</small>
+			      					</div>
+			      				</div>
+						{% endif %}
+						{% endfor %}
+			      			</div>
+
+			  			</div>
+						<div style="width:40%;display: inline-block;margin-left: 5%">
+					   		<textarea name=content class="form-control" rows="5"></textarea>
+					   		<button id="qa_answer" type="submit" uid="{{Userinfo[0].id}}" qid="{{q.id}}" class="btn btn-primary" style="margin-top: 3%">Answer</button>
+						</div>
+					</div>
+					{% endfor %}
+		  		</div>	
+			</div>
+		</div>
+
+		<div id="account_panel" class="tab-pane fade" style="margin-left: 30%; margin-right: 30%;">
+			<div class="list-group">
+	  			<div class="list-group-item">
+	    			<h4 class="list-group-item-heading">UNI</h4>
+	    			<p class="list-group-item-text">{{Userinfo[0].id}}</p>
+	  			</div>
+	  			<div class="list-group-item">
+	    			<h4 class="list-group-item-heading">Name</h4>
+	    			<p class="list-group-item-text">{{Userinfo[0].name}}</p>
+	  			</div>
+	  			<div class="list-group-item">
+	    			<h4 class="list-group-item-heading">Gender</h4>
+	    			<p class="list-group-item-text">{{Userinfo[0].gender}}</p>
+	  			</div>
+	  			<div class="list-group-item">
+	    			<h4 class="list-group-item-heading">Department</h4>
+	    			<p class="list-group-item-text">{{Userinfo[0].dep}}</p>
+	  			</div>
+	  			<div class="list-group-item">
+	    			<h4 class="list-group-item-heading">Title</h4>
+	    			<p class="list-group-item-text">{{Userinfo[0].title}}</p>
+	  			</div>
+	  			<div class="list-group-item">
+	    			<h4 class="list-group-item-heading">Email</h4>
+	    			<p class="list-group-item-text">{{Userinfo[0].email}}</p>
+	  			</div>
+	  			<div class="list-group-item">
+	    			<h4 class="list-group-item-heading">Contact Phone</h4>
+	    			<p class="list-group-item-text">{{Userinfo[0].phone}}</p>
+	  			</div>
+			</div>
 		</div>
 	</div>
-	
-	
 	<script type="text/javascript" src="../static/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="../static/js/bootstrap-datetimepicker.min.js"></script>
