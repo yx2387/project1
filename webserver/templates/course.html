@@ -158,17 +158,17 @@
     </div>
 
     <div id="qa_panel" class="tab-pane fade" style="margin-left: 30%;margin-right: 30%">
-      <form id="ask_form" method="POST" action="{{ url_for('ask',uid = uid,oid=Courses[0].oid )}}">
+      <div id="ask_form" method="POST">
         <div class="form-group">
            <label>Question title:</label>
-           <input type="text" name=title class="form-control">
+           <input type="text" id="title" class="form-control">
         </div>
         <div class="form-group">
            <label>Question description:</label>
-           <textarea class="form-control" name=des rows="3"></textarea>
+           <textarea class="form-control" id="des" rows="3"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Ask</button>
-      </form>
+        <button id="ask_btn" type="submit" uid="{{uid}}" oid="{{Courses[0].oid}}" class="btn btn-primary">Ask</button>
+      </div>
       <h2>Previous questions</h2>
       <div class="panel-group">
 

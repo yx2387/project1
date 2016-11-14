@@ -1,11 +1,16 @@
 $(document).ready(function(){
-	$("form#ask_form").submit(function() {
-		var formData = new FormData($(this)[0]);
-
-	    $.post("/upload", formData, function(data) {
+	$("#ask_btn").click(function() {
+	    $.post("/ask",
+		{
+		    uid:$("#ask_btn").attr("uid"),
+		    oid:$("#ask_btn").attr("oid"),
+		    title:$("#title").val(),
+		    des:$("#des").val()
+		},
+		function(data){
 		    $("#showText").text(data);
 			$("#modalShow").modal();
-	    });
+		});
 	});
 
 	// $("#modalShow").on('hide.bs.modal', function () {
