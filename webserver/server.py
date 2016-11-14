@@ -194,6 +194,9 @@ def index():
 def upload():
 #    print 1
     file = request.files['file']
+    if file.filename == '':
+        return 'ERROR: No file is selected!'
+
 #    print 2
     oid = request.form['course']
 #    print oid
@@ -219,20 +222,31 @@ def upload():
 	id = cursor.fetchone()[0]
 	cursor = g.conn.execute('INSERT INTO upload (open_cid, file_id, time) VALUES (%s,%s,%s)',(oid,id,time))
 
-        return redirect('/')
+        return 'Upload Success!'
 
 
 @app.route('/upload_ass', methods=['POST'])
 def upload_ass():
-    print 1
+#    print 1
     file = request.files['file']
-    print 2
+    if file.filename == '':
+        return 'ERROR: No file is selected!'
+#    print 2
     oid = request.form['course']
     title = request.form['title']
     des = request.form['des']
     due = request.form['due']
     points = request.form['points']
-    print 2    
+    if not title:
+        return 'ERROR: No title is entered!'
+    if not des:
+        return 'ERROR: No description is entered!'
+    if not due:
+        return 'ERROR: No due date is entered!'
+    if not points:
+        return 'ERROR: No points is entered!'
+
+#    print 2    
 #    print oid
     dir = UPLOAD_FOLDER + oid +'/'+'ass/'
     dir2 = os.path.join('static/',dir)
@@ -259,7 +273,7 @@ def upload_ass():
         aid = cursor.fetchone()[0]
         cursor = g.conn.execute('INSERT INTO postassignment (open_cid, assign_id, time) VALUES (%s,%s,%s)',(oid,aid,time))
 
-        return redirect('/')
+        return 'Post Assignment Success!'
 
 
 
@@ -273,6 +287,10 @@ def post_ann(uid):
 #  uid = request.form['uid']
   title = request.form['title']
   des = request.form['des']
+  if not title:
+    return 'ERROR: No title is entered!'
+  if not des:
+    return 'ERROR: No description is entered!'
 #  des = request.form['des']
   oid = request.form['course']
   print title
@@ -287,8 +305,7 @@ def post_ann(uid):
   aid = cursor.fetchone()[0]
   g.conn.execute( 'INSERT INTO postannouncement (open_cid, ann_id, time) VALUES (%s,%s,%s)',(oid,aid,time))
 
-  return redirect('/')
-
+  return 'Post Announcement Success!'
 
 @app.route('/ans/<uid>/<qid>', methods=['POST'])
 def ans(uid,qid):
@@ -296,6 +313,8 @@ def ans(uid,qid):
   content = request.form['content']
 #  des = request.form['des']
 #  oid = request.form['oid']
+  if not content:
+    return 'ERROR: No title is entered!'
   print uid
   print qid
   print content
@@ -303,8 +322,7 @@ def ans(uid,qid):
   time = time.replace(microsecond=0)
   g.conn.execute( 'INSERT INTO reply (user_id, que_id, time,ans_content) VALUES (%s,%s,%s,%s)',(uid,qid,time,content))
 
-  return redirect('/')
-
+  return 'Reply Success!'
 
 @app.route('/ask/<uid>/<oid>', methods=['POST'])
 def ask(uid,oid):
@@ -312,9 +330,9 @@ def ask(uid,oid):
   title = request.form['title']
   des = request.form['des']
   if not title:
-    return 'ERROR: Empty title!'
+    return 'ERROR: No title is entered!'
   if not des:
-    return 'ERROR: Empty description!'
+    return 'ERROR: No description is entered!'
 #  oid = request.form['oid']
   print uid
   print oid
@@ -325,14 +343,14 @@ def ask(uid,oid):
   qid = cursor.fetchone()[0]
   g.conn.execute( 'INSERT INTO ask (user_id, que_id, open_cid, time) VALUES (%s,%s,%s,%s)',(uid,qid,oid,time))
 
-  return 'SUCCESS'
+  return 'Post Question Success!'
 
 
 @app.route('/get_course/<cid>/<csession>/<cyear>/<cseason>/<uid>')
 def get_course(cid,csession,cyear,cseason,uid):
   if session['s'] != uid:
-    return redirect('/home_s')
-  print cid,csession
+    return redirect('/')
+#  print cid,csession
   cursor = g.conn.execute(
   """select c.course_id,c.session,c.course_name,o.year,o.season,u.user_name,c.credit,o.time,o.location,c.syllabus, o.open_cid
   from course c, open o,  instruct i,users u \
@@ -420,12 +438,12 @@ def home_i():
     cursor.close()
 
     cursor = g.conn.execute(
-    """select distinct u.user_id, u.user_name, u.gender, d.dep_name, i.title_level, u.email, u.phone
-    from users u, belongs b, department d, instructor i
+    """select u.user_id, u.user_name, u.gender, i.title_level, u.email, u.phone
+    from users u, belongs b, instructor i
     where u.user_id = %s and u.user_id = i.user_id  
     """
     ,session['i'])
-    Userinfo = [dict(id=row[0], name=row[1], gender=row[2], dep=row[3], title=row[4], email=row[5], phone=row[6]) for row in cursor.fetchall()]
+    Userinfo = [dict(id=row[0], name=row[1], gender=row[2], title=row[3], email=row[4], phone=row[5]) for row in cursor.fetchall()]
     cursor.close()
 
 #    print Userinfo
