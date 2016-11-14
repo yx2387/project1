@@ -321,7 +321,7 @@ def ask(uid,oid):
   qid = cursor.fetchone()[0]
   g.conn.execute( 'INSERT INTO ask (user_id, que_id, open_cid, time) VALUES (%s,%s,%s,%s)',(uid,qid,oid,time))
 
-  return redirect('/')
+  return 'SUCCESS'
 
 
 @app.route('/get_course/<cid>/<csession>/<cyear>/<cseason>/<uid>')
@@ -344,7 +344,7 @@ def get_course(cid,csession,cyear,cseason,uid):
   """select a.assign_id, a.assign_title, a.assign_description, a.points, a.due_date, p.time, a.assign_file
   from postassignment p, assignment a, open o, course c
   where o.course_id = %s and o.session = %s and c.course_id = o.course_id and o.session = c.session and p.open_cid = o.open_cid
-  and p.assign_id = a.assign_id and o.year = %s and o.season = %s"""
+  and p.assign_id = a.assign_id and o.year = %s and o.season = %s order by p.time desc"""
   ,cid , csession,cyear,cseason)
   Assigns = [dict(id=row[0], title=row[1], des=row[2], points=row[3], due=row[4], time=row[5], file=row[6]) for row in cursor.fetchall()]
 #  print Assigns
@@ -354,7 +354,7 @@ def get_course(cid,csession,cyear,cseason,uid):
   """select a.ann_id, a.ann_title, a.ann_content, p.time
   from postannouncement p, announcement a, open o, course c
   where o.course_id = %s and o.session = %s and c.course_id = o.course_id and o.session = c.session and p.open_cid = o.open_cid
-  and p.ann_id = a.ann_id and o.year = %s and o.season = %s"""
+  and p.ann_id = a.ann_id and o.year = %s and o.season = %s order by p.time desc"""
   ,cid , csession,cyear,cseason)
   Anns = [dict(id=row[0], title=row[1], des=row[2], time=row[3]) for row in cursor.fetchall()]
 #  print Anns
@@ -365,7 +365,7 @@ def get_course(cid,csession,cyear,cseason,uid):
   """select q.que_title, q.que_description, u.user_name, a.time, q.que_id
   from question q, ask a, users u, open o, course c
   where u.user_id = a.user_id and q.que_id = a.que_id and a.open_cid = o.open_cid and o.course_id = %s and 
-  o.session = %s and c.course_id = o.course_id and o.session = c.session and o.year = %s and o.season = %s
+  o.session = %s and c.course_id = o.course_id and o.session = c.session and o.year = %s and o.season = %s order by a.time desc
   """
   ,cid , csession,cyear,cseason)
   Ques = [dict(title=row[0], des=row[1], name=row[2], time=row[3], id=row[4]) for row in cursor.fetchall()]
@@ -377,7 +377,7 @@ def get_course(cid,csession,cyear,cseason,uid):
   """select r.ans_content, u2.user_name, r.time, q.que_id
   from question q, reply r, users u1, users u2, ask a, course c, open o
   where u1.user_id = a.user_id and q.que_id = a.que_id and r.que_id = q.que_id and r.user_id = u2.user_id and o.course_id = %s and 
-  o.session = %s and c.course_id = o.course_id and o.session = c.session and o.year = %s and o.season = %s
+  o.session = %s and c.course_id = o.course_id and o.session = c.session and o.year = %s and o.season = %s order by r.time desc
   """
   ,cid , csession,cyear,cseason)
   Ans = [dict(content=row[0], name=row[1], time=row[2], id=row[3]) for row in cursor.fetchall()]
@@ -431,7 +431,7 @@ def home_i():
     """select q.que_title, q.que_description, u1.user_name, a.time, q.que_id
     from question q, ask a, users u1, users u2, instruct i, open o
     where u1.user_id = a.user_id and q.que_id = a.que_id and u2.user_id = %s and u2.user_id = i.user_id and i.open_cid = o.open_cid
-    and a.open_cid = o.open_cid 
+    and a.open_cid = o.open_cid order by a.time desc
     """
     , session['i'])
     Ques = [dict(title=row[0], des=row[1], name=row[2], time=row[3], id=row[4]) for row in cursor.fetchall()]
@@ -443,7 +443,7 @@ def home_i():
     """select r.ans_content, u2.user_name, r.time, q.que_id
     from question q, reply r, users u1, users u2, ask a, users u3, instruct i, open o
     where u1.user_id = a.user_id and q.que_id = a.que_id and r.que_id = q.que_id and r.user_id = u2.user_id
-    and u3.user_id = %s and u3.user_id = i.user_id and i.open_cid = o.open_cid and a.open_cid = o.open_cid
+    and u3.user_id = %s and u3.user_id = i.user_id and i.open_cid = o.open_cid and a.open_cid = o.open_cid  order by r.time desc
     """
     , session['i'])
     Ans = [dict(content=row[0], name=row[1], time=row[2], id=row[3]) for row in cursor.fetchall()]
@@ -455,7 +455,7 @@ def home_i():
     """select a.assign_id, a.assign_title, a.assign_description, a.points, a.due_date, p.time, c.course_id, c.course_name, o.open_cid
     from postassignment p, assignment a, open o, course c, instruct i, semester s
     where i.user_id = %s and c.course_id = o.course_id and o.session = c.session and p.open_cid = o.open_cid
-    and p.assign_id = a.assign_id and i.open_cid = o.open_cid and s.year = o.year and s.season = o.season"""
+    and p.assign_id = a.assign_id and i.open_cid = o.open_cid and s.year = o.year and s.season = o.season order by p.time desc"""
     ,session['i']) 
     Assigns = [dict(id=row[0], title=row[1], des=row[2], points=row[3], due=row[4], time=row[5], cid=row[6], cname=row[7],oid=row[8]) for row in cursor.fetchall()]
 #    print Assigns
@@ -465,7 +465,7 @@ def home_i():
     """select a.ann_title, a.ann_content, p.time, c.course_id, c.course_name, o.open_cid
     from postannouncement p, announcement a, open o, course c, instruct i, semester s
     where i.user_id = %s and c.course_id = o.course_id and o.session = c.session and p.open_cid = o.open_cid
-    and p.ann_id = a.ann_id and i.open_cid = o.open_cid and s.year = o.year and s.season = o.season"""
+    and p.ann_id = a.ann_id and i.open_cid = o.open_cid and s.year = o.year and s.season = o.season order by p.time desc"""
     ,session['i'])
     Anns = [dict(title=row[0], content=row[1], time=row[2], cid=row[3], cname=row[4],oid=row[5]) for row in cursor.fetchall()]
 #    print Anns
@@ -513,7 +513,7 @@ def home_s():
     cursor = g.conn.execute(
     """select q.que_title, q.que_description, u.user_name, a.time, q.que_id
     from question q, ask a, users u
-    where u.user_id = %s and u.user_id = a.user_id and q.que_id = a.que_id
+    where u.user_id = %s and u.user_id = a.user_id and q.que_id = a.que_id order by a.time desc
     """
     ,session['s'])
     Ques = [dict(title=row[0], des=row[1], name=row[2], time=row[3], id=row[4]) for row in cursor.fetchall()]
@@ -524,7 +524,7 @@ def home_s():
     cursor = g.conn.execute(
     """select r.ans_content, u2.user_name, r.time, q.que_id
     from question q, reply r, users u1, users u2, ask a
-    where u1.user_id = %s and u1.user_id = a.user_id and q.que_id = a.que_id and r.que_id = q.que_id and r.user_id = u2.user_id
+    where u1.user_id = %s and u1.user_id = a.user_id and q.que_id = a.que_id and r.que_id = q.que_id and r.user_id = u2.user_id order by r.time desc
     """
     ,session['s'])
     Ans = [dict(content=row[0], name=row[1], time=row[2], id=row[3]) for row in cursor.fetchall()]
@@ -537,7 +537,7 @@ def home_s():
     from users u, assignment a, open o, postassignment p, take t, course c, semester s
     where t.user_id = %s and t.open_cid = o.open_cid and o.course_id = c.course_id and o.session = c.session
     and o.open_cid = p.open_cid and p.assign_id = a.assign_id and a.due_date > CURRENT_TIMESTAMP - INTERVAL '35 days'
-    and s.year = o.year and s.season = o.season
+    and s.year = o.year and s.season = o.season order by p.time desc
     """
     ,session['s'])
 #and a.due_date > CURRENT_TIMESTAMP - INTERVAL '35 days'
