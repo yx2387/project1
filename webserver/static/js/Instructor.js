@@ -18,12 +18,12 @@ $(document).ready(function(){
 	});
 
 	$("form#file_form").submit(function() {
-		// var formData = new FormData($(this)[0]);
+		var formData = new FormData($(this)[0]);
 
-	 //    $.post("/upload", formData, function(data) {
-		//     $("#showText").text("Answer Successfully!");
-		// 	$("#modalShow").modal();
-	 //    });
+	    $.post("/upload", formData, function(data) {
+		    $("#showText").text("Answer Successfully!");
+			$("#modalShow").modal();
+	    });
 	 $("#showText").text("Answer Successfully!");
 	$("#modalShow").modal();
 	});
