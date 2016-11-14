@@ -104,4 +104,27 @@ $(document).ready(function(){
 	$("#logout").click(function(){
 		window.location.href = "/logout_i";
 	});
+
+	$("#qa_answer").click(function(){
+		$.post("/ans",
+		{
+		    uid:$("#qa_answer").attr("uid"),
+		    qid:$("#qa_answer").attr("qid")
+		},
+		function(data,status){
+			location.reload();
+		    $("#showText").text("Answer Successfully!");
+			$("#modalShow").modal();
+		});
+	});
+
+	$("form#file_form").submit(function() {
+		var formData = new FormData($(this)[0]);
+
+	    $.post("/upload", formData, function(data) {
+	        location.reload();
+		    $("#showText").text("Answer Successfully!");
+			$("#modalShow").modal();
+	    });
+	});
 });
