@@ -44,7 +44,7 @@
 
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-	      <ul class="nav navbar-nav">
+	      <ul id="tabs" class="nav navbar-nav">
 	        <li id="overview_nav" class="active"><a href="#overview_panel" data-toggle="tab">Overview<span class="sr-only">(current)</span></a></li>
           <li id="file_nav"><a href="#file_panel" data-toggle="tab">Files</a></li>
 	        <li id="assignment_nav"><a href="#assignment_panel" data-toggle="tab">Assignments</a></li>
@@ -158,7 +158,7 @@
     </div>
 
     <div id="qa_panel" class="tab-pane fade" style="margin-left: 30%;margin-right: 30%">
-      <form method="POST" action="{{ url_for('ask',uid = uid,oid=Courses[0].oid )}}">
+      <form id="ask_form" method="POST" action="{{ url_for('ask',uid = uid,oid=Courses[0].oid )}}">
         <div class="form-group">
            <label>Question title:</label>
            <input type="text" name=title class="form-control">
@@ -167,7 +167,7 @@
            <label>Question description:</label>
            <textarea class="form-control" name=des rows="3"></textarea>
         </div>
-        <button id="qa_ask" type="submit" class="btn btn-primary">Ask</button>
+        <button type="submit" class="btn btn-primary">Ask</button>
       </form>
       <h2>Previous questions</h2>
       <div class="panel-group">
