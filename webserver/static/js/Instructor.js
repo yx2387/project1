@@ -9,10 +9,12 @@ $(document).ready(function(){
 		$.post("/ans",
 		{
 		    uid:$("#qa_answer").attr("uid"),
-		    qid:$("#qa_answer").attr("qid")
+		    qid:$("#qa_answer").attr("qid"),
+		    title:$("#title").val(),
+		    des:$("#des").val()
 		},
-		function(data,status){
-		    $("#showText").text("Answer Successfully!");
+		function(data){
+		    $("#showText").text(data);
 			$("#modalShow").modal();
 		});
 	});
