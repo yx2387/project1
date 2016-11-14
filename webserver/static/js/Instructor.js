@@ -5,10 +5,10 @@ $(document).ready(function(){
 		window.location.href = "/logout_i";
 	});
 
-	$("#file_form").submit(function() {
-		var formData = new FormData($(this)[0]);
+	$("#file_btn").click(function() {
+		var formData = new FormData($("#file_form")[0]);
 
-	    $.post("upload", formData, function(data) {
+	    $.post("/upload", formData, function(data) {
 		    $("#showText").text(data);
 			$("#modalShow").modal();
 	    });
