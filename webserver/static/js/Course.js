@@ -1,9 +1,8 @@
 $(document).ready(function(){
 	$("#ask_btn").click(function() {
-	    $.post("/ask",
+		var url = "/ask/" + $("#ask_btn").attr("uid") + "/" + $("#ask_btn").attr("oid");
+	    $.post(url,
 		{
-		    uid:$("#ask_btn").attr("uid"),
-		    oid:$("#ask_btn").attr("oid"),
 		    title:$("#title").val(),
 		    des:$("#des").val()
 		},
