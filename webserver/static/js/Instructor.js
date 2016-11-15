@@ -6,7 +6,7 @@ $(document).ready(function(){
 	});
 
 	$("#file_form").submit(function(e) {
-		e.preventDefault();
+//		e.preventDefault();
 		var formData = new FormData($(this)[0]);    
 		$.post("/upload", formData, function(data) {
 		    $("#showText").text(data);
