@@ -5,16 +5,19 @@ $(document).ready(function(){
 		window.location.href = "/logout_i";
 	});
 
-	$("#file_btn").click(function() {
-		var formData = new FormData($("#file_form")[0]);
+	$("#file_form").submit(function() {
+		var formData = new FormData($(this)[0]);
 
 	    $.post("/upload", formData, function(data) {
 		    $("#showText").text(data);
 			$("#modalShow").modal();
 	    });
+
+	    return false;
 	});
 
-	$("#assfile_form").submit(function() {
+	$("#assfile_form").submit(function(event) {
+		event.preventDefault();
 		var formData = new FormData($(this)[0]);
 
 	    $.post($("#assfile_form").attr("action"), formData, function(data) {
