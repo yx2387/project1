@@ -41,7 +41,7 @@
 
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-	      <ul class="nav navbar-nav">
+	      <ul id="myTab" class="nav navbar-nav">
 	        <li id="course_nav" class="active"><a href="#course_panel" data-toggle="tab">Courses <span class="sr-only">(current)</span></a></li>
 	        <li id="file_nav"><a href="#file_panel" data-toggle="tab">Files</a></li>
 	        <li id="assignment_nav"><a href="#assignment_panel" data-toggle="tab">Assignments</a></li>
@@ -86,7 +86,7 @@
 					<label>File input</label>
 				    <input type="file" name="file">
 				</div>
-				<button type="submit" class="btn btn-primary">Post</button>
+				<button id="file_upload_btn" type="button" class="btn btn-primary">Post</button>
 			</form>
 			<h2>Previous files</h2>
 	                {% for c in Courses %}
