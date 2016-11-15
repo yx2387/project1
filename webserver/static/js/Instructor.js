@@ -5,15 +5,25 @@ $(document).ready(function(){
 		window.location.href = "/logout_i";
 	});
 
-	$("#file_form").submit(function() {
-		var formData = new FormData($(this)[0]);
+	$("#file_form").submit(function(e) {
+		// var formData = new FormData($(this)[0]);    
+		// $.post("/upload", formData, function(data) {
+		//     $("#showText").text(data);
+		// 	$("#modalShow").modal();
+	 //    });
+	    var data = new FormData($(this)[0]);
 
-	    $.post("/upload", formData, function(data) {
-		    $("#showText").text(data);
-			$("#modalShow").modal();
+	    $.ajax({
+	        url: '/upload',
+	        data: data,
+	        processData: false,
+	        type: 'POST',
+	        success: function ( data ) {
+	            alert( data );
+	        }
 	    });
 
-	    return false;
+    	e.preventDefault();
 	});
 
 	$("#assfile_form").submit(function(event) {
