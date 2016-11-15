@@ -7,11 +7,20 @@ $(document).ready(function(){
 
 	$("#file_form").submit(function(e) {
 		e.preventDefault();
-		var formData = new FormData($(this)[0]);    
-		$.post("/upload", formData, function(data) {
-		    $("#showText").text(data);
-			$("#modalShow").modal();
+
+	    var data = new FormData($(this)[0]);
+
+	    $.ajax({
+	        url: '/upload',
+	        data: data,
+	        processData: false,
+	        type: 'POST',
+	        success: function ( data ) {
+	            alert( data );
+	        }
 	    });
+
+  
 	});
 
 	$("#assfile_form").submit(function(event) {
