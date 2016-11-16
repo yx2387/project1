@@ -40,7 +40,7 @@ $(document).ready(function(){
 	$("#assfile_form").submit(function(event) {
 		alert("222");
 		event.preventDefault();
-		var formData = new FormData($(this)[0]);
+		var data = new FormData($(this)[0]);
 
 	    $.ajax({
 	        url: $("#assfile_form").attr("action"),
@@ -55,7 +55,7 @@ $(document).ready(function(){
 	});
 
 	$("#ann_form").submit(function() {
-		var formData = new FormData($(this)[0]);
+		var data = new FormData($(this)[0]);
 
 	    $.ajax({
 	        url: $("#ann_form").attr("action"),
@@ -70,7 +70,7 @@ $(document).ready(function(){
 	});
 
 	$("#qa_form").submit(function() {
-		var formData = new FormData($(this)[0]);
+		var data = new FormData($(this)[0]);
 
 	    $.ajax({
 	        url: $("#qa_form").attr("action"),
