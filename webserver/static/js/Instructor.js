@@ -42,10 +42,14 @@ $(document).ready(function(){
 		event.preventDefault();
 		var formData = new FormData($(this)[0]);
 
-	    $.post($("#assfile_form").attr("action"), formData, function(data) {
-	    	alert("enter");
-		    $("#showText").text(data);
-			$("#modalShow").modal();
+	    $.ajax({
+	        url: $("#assfile_form").attr("action"),
+	        data: data,
+	        processData: false,
+	        type: 'POST',
+	        success: function ( data ) {
+	            alert( data );
+	        }
 	    });
 	    alert("end");
 	});
@@ -53,18 +57,30 @@ $(document).ready(function(){
 	$("#ann_form").submit(function() {
 		var formData = new FormData($(this)[0]);
 
-	    $.post($("#ann_form").attr("action"), formData, function(data) {
-		    $("#showText").text(data);
-			$("#modalShow").modal();
+	    $.ajax({
+	        url: $("#ann_form").attr("action"),
+	        data: data,
+	        processData: false,
+	        type: 'POST',
+	        success: function ( data ) {
+	            alert( data );
+	        }
 	    });
+
 	});
 
 	$("#qa_form").submit(function() {
 		var formData = new FormData($(this)[0]);
 
-	    $.post($("#qa_form").attr("action"), formData, function(data) {
-		    $("#showText").text(data);
-			$("#modalShow").modal();
+	    $.ajax({
+	        url: $("#qa_form").attr("action"),
+	        data: data,
+	        processData: false,
+	        type: 'POST',
+	        success: function ( data ) {
+	            $("#showText").text(data);
+				$("#modalShow").modal();
+	        }
 	    });
 	});
 
