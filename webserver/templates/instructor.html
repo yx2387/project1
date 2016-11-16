@@ -73,7 +73,7 @@
 			{% endfor %}
 		</div>
 		<div id="up_file_panel" class="tab-pane fade" style="width:40%;margin-left: 30%;margin-bottom: 10%">
-			<form id="file_form" method="post" enctype="multipart/form-data">
+			<form id="file_form" method="post" action="upload" enctype="multipart/form-data">
 				<div class="form-group">
 				    <label>Course:</label>
 				    <select type="text" class="form-control" name="course">
@@ -86,7 +86,7 @@
 					<label>File input</label>
 				    <input type="file" name="file">
 				</div>
-				<button id="file_upload_btn" type="button" class="btn btn-primary">Post</button>
+				<button type="submit" class="btn btn-primary">Post</button>
 			</form>
 			<h2>Previous files</h2>
 	                {% for c in Courses %}
@@ -175,25 +175,23 @@
 		</div>
 
 		<div id="up_announcement_panel" class="tab-pane fade" style="width:40%;margin-left: 30%;margin-bottom: 10%">
-			<form id="ann_form" method="POST" action="{{ url_for('post_ann',uid = Userinfo[0].id )}}">
-				<div class="form-group">
-				    <label>Course:</label>
-				    <select type="text" class="form-control" name=course>
+			<div class="form-group">
+				<label>Course:</label>
+				<select type="text" class="form-control" id="ann_course">
 	                                {% for c in Courses %}
 	                                <option value="{{c.oid}}"> {{c.id}} {{c.name}} {{c.session}} {{c.year}} {{c.season}}</option>
 	                                {% endfor %}
-				    </select>
-				</div>
-				<div class="form-group">
-				   <label>Announcement title:</label>
-				   <input type="text" name=title class="form-control">
-				</div>
-				<div class="form-group">
-				   <label>Announcement description:</label>
-				   <textarea class="form-control" name=des rows="3"></textarea>
-				</div>
-				<button type="submit" class="btn btn-primary">Post</button>
-			</form>
+				</select>
+			</div>
+			<div class="form-group">
+				<label>Announcement title:</label>
+				<input type="text" id="ann_title" class="form-control">
+			</div>
+			<div class="form-group">
+				<label>Announcement description:</label>
+				<textarea class="form-control" id="ann_des" rows="3"></textarea>
+			</div>
+			<button id="ann_btn" url="{{ url_for('post_ann',uid = Userinfo[0].id )}}" type="button" class="btn btn-primary">Post</button>
 			<div>
 				<h2>Previous announcements</h2>
 
@@ -255,10 +253,10 @@
 			      			</div>
 
 			  			</div>
-						<form id="qa_form" action="{{ url_for('ans',uid = Userinfo[0].id,qid=q.id )}}" method="POST" style="width:40%;display: inline-block;margin-left: 5%">
-							<textarea name=content class="form-control" rows="5"></textarea>
-					   		<button type="submit" uid="{{Userinfo[0].id}}" qid="{{q.id}}" class="btn btn-primary" style="margin-top: 3%">Answer</button>
-						</form>
+						<div style="width:40%;display: inline-block;margin-left: 5%">
+							<textarea id="answer_content" class="form-control" rows="5"></textarea>
+					   		<button id="answer_btn" type="button" url="{{ url_for('ans',uid = Userinfo[0].id,qid=q.id )}}" class="btn btn-primary" style="margin-top: 3%">Answer</button>
+						</div>
 					</div>
 					{% endfor %}
 		  		</div>	

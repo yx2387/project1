@@ -21,67 +21,29 @@ $(document).ready(function(){
 		window.location.href = "/logout_i";
 	});
 
-	$("#file_upload_btn").click(function() {
-		alert("2345");
-
-	    var data = new FormData($("#file_form")[0]);
-
-	    $.ajax({
-	        url: '/upload',
-	        data: data,
-	        processData: false,
-	        type: 'POST',
-	        success: function ( data ) {
-	            alert( data );
-	        }
-	    });
-	});
-
-	$("#assfile_form").submit(function(event) {
-		alert("222");
-		event.preventDefault();
-		var data = new FormData($(this)[0]);
-
-	    $.ajax({
-	        url: $("#assfile_form").attr("action"),
-	        data: data,
-	        processData: false,
-	        type: 'POST',
-	        success: function ( data ) {
-	            alert( data );
-	        }
-	    });
-	    alert("end");
-	});
-
-	$("#ann_form").submit(function() {
-		var data = new FormData($(this)[0]);
-
-	    $.ajax({
-	        url: $("#ann_form").attr("action"),
-	        data: data,
-	        processData: false,
-	        type: 'POST',
-	        success: function ( data ) {
-	            alert( data );
-	        }
-	    });
+	$("#ann_btn").click(function() {
+	    $.post($(this).attr("url"),
+		{
+			course:$("#ann_course").val(),
+			title:$("#ann_title").val(),
+			des:$("#ann_des").val
+		},
+		function(data){
+		    $("#showText").text(data);
+			$("#modalShow").modal();
+		});
 
 	});
 
-	$("#qa_form").submit(function() {
-		var data = new FormData($(this)[0]);
-
-	    $.ajax({
-	        url: $("#qa_form").attr("action"),
-	        data: data,
-	        processData: false,
-	        type: 'POST',
-	        success: function ( data ) {
-	            $("#showText").text(data);
-				$("#modalShow").modal();
-	        }
-	    });
+	$("#answer_btn").click(function() {
+	    $.post($(this).attr("url"),
+		{
+			content:$("#answer_content").val()
+		},
+		function(data){
+		    $("#showText").text(data);
+			$("#modalShow").modal();
+		});
 	});
 
 
