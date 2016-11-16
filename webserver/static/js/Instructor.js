@@ -36,7 +36,6 @@ $(document).ready(function(){
 	});
 
 	$(".answer_btn").click(function() {
-		alert($(this).siblings("textarea").val());
 	    $.post($(this).attr("url"),
 		{
 			content:$(this).siblings("textarea").val()
