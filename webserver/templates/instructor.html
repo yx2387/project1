@@ -254,8 +254,8 @@
 
 			  			</div>
 						<div style="width:40%;display: inline-block;margin-left: 5%">
-							<textarea id="answer_content" class="form-control" rows="5"></textarea>
-					   		<button id="answer_btn" type="button" url="{{ url_for('ans',uid = Userinfo[0].id,qid=q.id )}}" class="btn btn-primary" style="margin-top: 3%">Answer</button>
+							<textarea class="form-control" rows="5"></textarea>
+					   		<button type="button" url="{{ url_for('ans',uid = Userinfo[0].id,qid=q.id )}}" class="answer_btn btn btn-primary" style="margin-top: 3%">Answer</button>
 						</div>
 					</div>
 					{% endfor %}

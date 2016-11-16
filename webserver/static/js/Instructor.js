@@ -26,7 +26,7 @@ $(document).ready(function(){
 		{
 			course:$("#ann_course").val(),
 			title:$("#ann_title").val(),
-			des:$("#ann_des").val
+			des:$("#ann_des").val()
 		},
 		function(data){
 		    $("#showText").text(data);
@@ -35,10 +35,11 @@ $(document).ready(function(){
 
 	});
 
-	$("#answer_btn").click(function() {
+	$(".answer_btn").click(function() {
+		alert($(this).siblings("textarea").val());
 	    $.post($(this).attr("url"),
 		{
-			content:$("#answer_content").val()
+			content:$(this).siblings("textarea").val()
 		},
 		function(data){
 		    $("#showText").text(data);
