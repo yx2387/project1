@@ -24,7 +24,7 @@ from datetime import datetime, timedelta
 from dateutil import parser
 
 UPLOAD_FOLDER = 'uploads/'
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','ppt','pptx','doc','docx'])
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -195,8 +195,8 @@ def upload():
 #    print 1
     file = request.files['file']
     if file.filename == '':
-        return 'ERROR: No file is selected!'
-
+        text = 'ERROR: No file is selected!'
+	return render_template('upload.html', text=text)
 #    print 2
     oid = request.form['course']
 #    print oid
@@ -217,20 +217,29 @@ def upload():
 	time = datetime.now()
         time = time.replace(microsecond=0)
 
+	cursor = engine.execute("select * from file f where f.file_content = %s",url);
+	if cursor.fetchall() != []:
+	        text = 'This file already exists, please try a different name!!'
+        	return render_template('upload.html', text=text)
+
+
 	cursor = g.conn.execute( 'INSERT INTO file (file_id, file_name, file_content) VALUES (default,%s,%s)',(name,url))
 	cursor = g.conn.execute('select lastval()')
 	id = cursor.fetchone()[0]
 	cursor = g.conn.execute('INSERT INTO upload (open_cid, file_id, time) VALUES (%s,%s,%s)',(oid,id,time))
 
-        return 'Upload Success!'
-
+        text = 'Upload Success!'
+	return render_template('upload.html', text=text)
+    text = 'Invalid File type!'
+    return render_template('upload.html', text=text)
 
 @app.route('/upload_ass', methods=['POST'])
 def upload_ass():
 #    print 1
     file = request.files['file']
     if file.filename == '':
-        return 'ERROR: No file is selected!'
+        text = 'ERROR: No file is selected!'
+	return render_template('upload.html', text=text)
 #    print 2
     oid = request.form['course']
     title = request.form['title']
@@ -238,13 +247,17 @@ def upload_ass():
     due = request.form['due']
     points = request.form['points']
     if not title:
-        return 'ERROR: No title is entered!'
+        text = 'ERROR: No title is entered!'
+	return render_template('upload.html', text=text)
     if not des:
-        return 'ERROR: No description is entered!'
+        text =  'ERROR: No description is entered!'
+	return render_template('upload.html', text=text)
     if not due:
-        return 'ERROR: No due date is entered!'
+        text = 'ERROR: No due date is entered!'
+	return render_template('upload.html', text=text)
     if not points:
-        return 'ERROR: No points is entered!'
+        text = 'ERROR: No points is entered!'
+	return render_template('upload.html', text=text)
 
 #    print 2    
 #    print oid
@@ -268,13 +281,22 @@ def upload_ass():
 	time = parser.parse(due)
 	time = time - timedelta(days=15)
 
+
+        cursor = engine.execute("select * from assignment a where a.assign_file = %s",url);
+        if cursor.fetchall() != []:
+                text = 'This file already exists, please try a different name!!'
+                return render_template('upload.html', text=text)
+
+
         cursor = g.conn.execute( 'INSERT INTO assignment (assign_id,assign_title,assign_description,assign_file,due_date,points) VALUES (default,%s,%s,%s,%s,%s)',(title,des,url,due,points))
         cursor = g.conn.execute('select lastval()')
         aid = cursor.fetchone()[0]
         cursor = g.conn.execute('INSERT INTO postassignment (open_cid, assign_id, time) VALUES (%s,%s,%s)',(oid,aid,time))
 
-        return 'Post Assignment Success!'
-
+        text = 'Post Assignment Success!'
+	return render_template('upload.html', text=text)
+    text = 'Invalid File type!'
+    return render_template('upload.html', text=text)
 
 
 
